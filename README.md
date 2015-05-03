@@ -14,7 +14,7 @@ gpx files are based on xml with specific tags and attributes
 
 For more information about gpx format see http://www.topografix.com/gpx_manual.asp
 
-#How to do
+# How to do
 
 ### Load JavaScript file
 ```html
