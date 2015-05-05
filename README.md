@@ -1,6 +1,6 @@
 # gpx-parser
 
-*gpx-parser* is a lightweight JS library wich parse .gpx file and calculate some datas like 
+*gpx-parser* is a lightweight JS library wich parse .gpx file and get or calculate some datas like 
 - gpx metadatas
 - total et cumulate distances
 - min, max, average, positive and negative height différence
@@ -33,15 +33,15 @@ var heightDifference = gpx.heightDifference;
 ```
 
 # Documentation
-Coming soon !
+**WIP**
 
 | Property  | Type | Description|
 | ------------- | ------------- | ------------- | 
 | xmlSource | XML | XML Object parsed from gpx string file | 
 | jsonSource | JSON Object | JSON parsed data from xmlSource |
-| trackpoints | Object | list of <trkpt> attributes and childnode tag|
-| waypoints | Object | list of <wpt> attributes and childnode tag |
-| routepoints | Object | list of <rtept> attributes and childnode tag |
+| trackpoints | Object | List of <trkpt> attributes and childnode tag|
+| waypoints | Object | List of <wpt> attributes and childnode tag |
+| routepoints | Object | List of <rtept> attributes and childnode tag |
 | distance | Integer | Total distance in km |
 | cumulDistance | Array | Distance from Startpoint to a waypoint |
 | elevation | Object | min, max, average, negative and positive height difference |
