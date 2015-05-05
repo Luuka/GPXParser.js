@@ -43,7 +43,6 @@ Coming soon !
 | waypoints | Object | list of <wpt> attributes and childnode tag |
 | routepoints | Object | list of <rtept> attributes and childnode tag |
 | distance | Integer | Total distance in km |
-| cumulDistance | Array | |
-| elevation | Object | |
-| heightDifference | Object | |
+| cumulDistance | Array | Distance from Startpoint to a waypoint |
+| elevation | Object | min, max, average, negative and positive height difference |
 
