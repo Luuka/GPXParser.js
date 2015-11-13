@@ -31,11 +31,10 @@ gpx.parse("<xml><gpx></gpx></xml>"); //parse gpx file from string data
 
 ```js
 var totalDistance = gpx.distance;
-var heightDifference = gpx.heightDifference;
+var heightDifference = gpx.elevation.heightDifference;
 ```
 
 # Documentation
-**WIP**
 
 | Property  | Type | Description|
 | ------------- | ------------- | ------------- | 
@@ -76,4 +75,36 @@ var heightDifference = gpx.heightDifference;
 - data inside *waypoints* depend on the construction of the gpx original file
 
 #### routepoints
+
+*routepoints* is an Object wich contain the representation of all the `rte` tags with all the child nodes and the attributes : `lat`, `lon`, `ele`
+
+**Note :** 
+- *routepoints* can be empty if the gpx file doesn't contain any `wpt` tag
+- data inside *routepoints* depend on the construction of the gpx original file
+
+### distance
+
+*distance* is a Integer wich represent total distance of the track in Kilometers.
+
+### cumulDistance 
+
+*cumulDistance* is an array wich contain distance from Startpoint to a waypoint. 
+
+```javascript
+console.log(gpx.cumulDistance[0]) //display 0 
+console.log(gpx.cumulDistance[1]) //display distance between point 0 and point 1
+//[...]
+console.log(gpx.cumulDistance[50]) //display distance between point 0 and point 50
+```
+
+### elevation 
+*elevation* is a Object wich contain min, max, average, negative and positive height difference of the track.
+
+| Key | Value |
+| --- | ----- |
+| min | Minimum height      |
+| max | Maximum height      |
+| avg | Average height      |
+| d+ | Positive height difference       |
+| d- | Negative height difference      |
 
