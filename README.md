@@ -2,7 +2,7 @@
 
 *gpx-parser* is a lightweight JS library wich parse .gpx file and get or calculate some datas like
 - gpx metadatas
-- total et cumulate distances
+- total and cumulate distances
 - min, max, average, positive and negative height différence
 
 # gpx ? What is this ?
