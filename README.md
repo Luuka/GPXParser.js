@@ -18,7 +18,7 @@ For more information about gpx format see http://www.topografix.com/gpx_manual.a
 
 ### Load JavaScript file
 ```html
-<script src="./js/gpx-parser.min.js"></script>
+<script src="./js/gpx-parser.js"></script>
 ```
 
 ### Create and parse file
@@ -30,8 +30,7 @@ gpx.parse("<xml><gpx></gpx></xml>"); //parse gpx file from string data
 ### Use the gpx Object
 
 ```js
-var totalDistance = gpx.distance;
-var heightDifference = gpx.elevation.heightDifference;
+var totalDistance = gpx.tracks[0].distance.total;
 ```
 
 # Documentation
@@ -39,71 +38,187 @@ var heightDifference = gpx.elevation.heightDifference;
 | Property  | Type | Description|
 | ------------- | ------------- | ------------- |
 | xmlSource | XML | XML Object parsed from gpx string file |
-| jsonSource | JSON Object | JSON parsed data from xmlSource |
-| trackpoints | Object | List of <trkpt> attributes and childnode tag|
-| waypoints | Object | List of <wpt> attributes and childnode tag |
-| routepoints | Object | List of <rtept> attributes and childnode tag |
-| distance | Integer | Total distance in km |
-| cumulDistance | Array | Distance from Startpoint to a waypoint |
-| elevation | Object | min, max, average, negative and positive height difference |
+| metadata | Metadata object | File metadata |
+| waypoints | Array of Waypoint object | Array of waypoints |
+| tracks | Array of Track object | Array of waypoints of tracks |
+| routes | Array of Route object | Array of waypoints of routes |
 
-#### xmlSource
 
-*xmlSource* is a DOM object representation of the xml file. You can use DOM research function like `querySelector()` on it. *xmlSource* is automatically parsed, it a perfect representation of the gpx source file.
 
-#### jsonSource
+- xmlSource
+- metadata
+  - name
+  - desc
+  - link
+    - href
+    - text
+    - type
+  - author
+    - name
+    - email
+      - id
+      - domain
+    - link
+      - href
+      - text
+      - type
+  - time
+- waypoints
+  - waypoint
+    - name
+    - cmt
+    - desc
+    - lat
+    - lon
+    - ele
+- tracks
+  - track
+    - name
+    - cmt
+    - desc
+    - src
+    - number
+    - link
+    - type
+    - points
+      - lat
+      - lon
+      - ele
+    - distance
+      - total
+      - cumul
+        - incremental values
+        - [...]
+    - elevation
+      - min
+      - max
+      - pos
+      - neg
+      - avg
+  - [track]
+    - [...]
+- routes
+  - route
+    - name
+    - cmt
+    - desc
+    - src
+    - number
+    - link
+    - type
+    - points
+      - lat
+      - lon
+      - ele
+    - distance
+      - total
+      - cumul
+        - incremental values
+        - [...]
+    - elevation
+      - min
+      - max
+      - pos
+      - neg
+      - avg
+  - [route]
+    - [...]
 
-*jsonSource* is a JSON Object representation
-**WIP**
 
-#### trackpoints
 
-*trackpoints* is an Object wich represent the `trk` tag with all child nodes and attributes :
-- optional data like `name`, `desc`
-- trkpts : list of all the trackpoints with child nodes and attributes (`lat`, `lon`, `ele`, `time`, `speed`, `desc`)
+## Metadata object
 
-**Note :**
-- *trackpoints* can be empty if the gpx file doesn't contain any `trk` tag
-- data inside *trackpoints* depend on the construction of the gpx original file
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| name      | String | File name |
+| desc      | String | Description |
+| link      | Link object | Web address  |
+| author    | Float  | Author object    |
+| time      | DateTime  | Time   |
 
-#### waypoints
 
-*waypoints* is an Object wich contain the representation of all the `wpt` tags with all the child nodes and the attributes : `lat`, `lon`, `ele`
+## Waypoint object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| name     | String | Point name |
+| cmt      | String | Comment           |
+| desc     | String | Point description |
+| lat      | Float  | Point latitute    |
+| lon      | Float  | Point longitude   |
+| ele      | Float  | Point elevation   |
 
-**Note :**
-- *waypoints* can be empty if the gpx file doesn't contain any `wpt` tag
-- data inside *waypoints* depend on the construction of the gpx original file
 
-#### routepoints
+## Track object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| name     | String | Point name |
+| cmt      | String | Comment           |
+| desc     | String | Point description |
+| src      | String | Used device           |
+| number      | String | Track identifier           |
+| link      | String | Link to a web address           |
+| type      | String | Track type           |
+| points      | Array | Points object array |
+| distance      | Distance Object | Distance informations about the Route |
+| elevation      | Elevation Object | Elevation informations about the Route |
 
-*routepoints* is an Object wich contain the representation of all the `rte` tags with all the child nodes and the attributes : `lat`, `lon`, `ele`
 
-**Note :**
-- *routepoints* can be empty if the gpx file doesn't contain any `wpt` tag
-- data inside *routepoints* depend on the construction of the gpx original file
+## Route object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| name     | String | Point name |
+| cmt      | String | Comment           |
+| desc     | String | Point description |
+| src      | String | Used device           |
+| number      | String | Track identifier           |
+| link      | String | Link to a web address           |
+| type      | String | Route type           |
+| points      | Array | Points object array    |
+| distance      | Distance Object | Distance informations about the Route |
+| elevation      | Elevation Object | Elevation informations about the Route |
 
-### distance
 
-*distance* is a Integer wich represent total distance of the track in Kilometers.
+## Point object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| lat      | Float  | Point latitute    |
+| lon      | Float  | Point longitude   |
+| ele      | Float  | Point elevation   |
 
-### cumulDistance
 
-*cumulDistance* is an array wich contain distance from Startpoint to a waypoint.
+## Distance object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| total      | Float  | Total distance of the Route/Track    |
+| cumul      | Float  | Cumulative distance at each point of the Route/Track   |
 
-```javascript
-console.log(gpx.cumulDistance[0]) //display 0
-console.log(gpx.cumulDistance[1]) //display distance between point 0 and point 1
-//[...]
-console.log(gpx.cumulDistance[50]) //display distance between point 0 and point 50
-```
 
-### elevation
-*elevation* is a Object wich contain min, max, average, negative and positive height difference of the track.
+## Elevation object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| max      | Float  | Maximum elevation   |
+| min      | Float  | Minimum elevation  |
+| pos      | Float  | Positive elevation difference  |
+| neg      | Float  | Negative elevation difference  |
+| avg      | Float  | Average elevation |
 
-| Key | Value |
-| --- | ----- |
-| min | Minimum height      |
-| max | Maximum height      |
-| avg | Average height      |
-| d+ | Positive height difference       |
-| d- | Negative height difference      |
+
+## Author object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| name      | String  | Author name   |
+| email      | Email object  | Email address of the author |
+| link      | Link object  | Web address |
+
+## Email object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| id      | String  | Email id   |
+| domain | String  | Email domain |
+
+## Link  object
+| Property | Type   | Description       |
+| -------- | ------ | ----------------- |
+| href      | String  | Web address |
+| text      | String  | Link text |
+| type      | String  | Link type |

@@ -1,0 +1,23 @@
+{
+  "name": "gpx-parser",
+  "version": "2.0.0",
+  "description": "GPX file parser",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luuka/gpx-parser.git"
+  },
+  "keywords": [
+    "gpx",
+    "parser"
+  ],
+  "author": "Lucas Trebouet Voisin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Luuka/gpx-parser/issues"
+  },
+  "homepage": "https://github.com/Luuka/gpx-parser#readme"
+}
