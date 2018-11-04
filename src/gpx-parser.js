@@ -9,14 +9,13 @@ var gpxParser = function () {
 gpxParser.prototype.parse = function (string) {
     var keepThis = this;
     var domParser = new DOMParser();
-    string = string.replace(/(\r\n\t|\n|\r\t)/gm,"")
     this.xmlSource = domParser.parseFromString(string, 'text/xml');
 
-    let metadata = this.xmlSource.querySelector('metadata');
+    metadata = this.xmlSource.querySelector('metadata');
     if(metadata != null){
-        this.metadata.name       = this.getElementValue(metadata, "name");
-        this.metadata.desc       = this.getElementValue(metadata, "desc");
-        this.metadata.time       = this.getElementValue(metadata, "time");
+        this.metadata.name  = this.getElementValue(metadata, "name");
+        this.metadata.desc  = this.getElementValue(metadata, "desc");
+        this.metadata.time  = this.getElementValue(metadata, "time");
 
         let author = {};
         let authorElem = metadata.querySelector('author');
@@ -43,15 +42,17 @@ gpxParser.prototype.parse = function (string) {
 
         let link = {};
         let linkElem = metadata.querySelector('link');
-        link.href = linkElem.getAttribute('href');
-        link.text = this.getElementValue(linkElem, "text");
-        link.type = this.getElementValue(linkElem, "type");
-        this.metadata.link = link;
+        if(linkElem != null){
+            link.href = linkElem.getAttribute('href');
+            link.text = this.getElementValue(linkElem, "text");
+            link.type = this.getElementValue(linkElem, "type");
+            this.metadata.link = link;
+        }
     }
 
     this.xmlSource.querySelectorAll('wpt').forEach(function(wpt){
         let pt  = {};
-        pt.name = this.getElementValue(wpt, "name")
+        pt.name = keepThis.getElementValue(wpt, "name")
         pt.lat  = parseFloat(wpt.getAttribute("lat"));
         pt.lon  = parseFloat(wpt.getAttribute("lon"));
         pt.ele  = parseFloat(keepThis.getElementValue(wpt, "ele"));
@@ -113,7 +114,7 @@ gpxParser.prototype.parse = function (string) {
 };
 
 gpxParser.prototype.getElementValue = function(parent, needle){
-    let elem = parent.querySelector(needle);
+    let elem = parent.querySelector(" :scope > " + needle);
     if(elem != null){
             return elem.innerHTML;
     }
