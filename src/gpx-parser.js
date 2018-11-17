@@ -63,8 +63,8 @@ gpxParser.prototype.parse = function (string) {
 
     this.xmlSource.querySelectorAll('rte').forEach(function(rte){
         let route = {};
-        route.name = rte.querySelector('name').innerHTML;
 
+        route.name   = keepThis.getElementValue(rte, "name");
         route.cmt    = keepThis.getElementValue(rte, "cmt");
         route.desc   = keepThis.getElementValue(rte, "desc");
         route.src    = keepThis.getElementValue(rte, "src");
@@ -89,8 +89,8 @@ gpxParser.prototype.parse = function (string) {
 
     this.xmlSource.querySelectorAll('trk').forEach(function(trk){
         let track = {};
-        track.name = trk.querySelector('name').innerHTML;
 
+        track.name   = keepThis.getElementValue(trk, "name");
         track.cmt    = keepThis.getElementValue(trk, "cmt");
         track.desc   = keepThis.getElementValue(trk, "desc");
         track.src    = keepThis.getElementValue(trk, "src");
