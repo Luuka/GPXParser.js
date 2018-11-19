@@ -50,7 +50,9 @@ gpxParser.prototype.parse = function (string) {
         }
     }
 
-    this.xmlSource.querySelectorAll('wpt').forEach(function(wpt){
+    var wpts = [].slice.call(this.xmlSource.querySelectorAll('wpt'));
+    for (let idx in wpts){
+        var wpt = wpts[idx];
         let pt  = {};
         pt.name = keepThis.getElementValue(wpt, "name")
         pt.lat  = parseFloat(wpt.getAttribute("lat"));
@@ -59,11 +61,12 @@ gpxParser.prototype.parse = function (string) {
         pt.cmt  = keepThis.getElementValue(wpt, "cmt");
         pt.desc = keepThis.getElementValue(wpt, "desc");
         keepThis.waypoints.push(pt);
-    });
+    }
 
-    this.xmlSource.querySelectorAll('rte').forEach(function(rte){
+    var rtes = [].slice.call(this.xmlSource.querySelectorAll('rte'));
+    for (let idx in rtes){
+        var rte = rtes[idx];
         let route = {};
-
         route.name   = keepThis.getElementValue(rte, "name");
         route.cmt    = keepThis.getElementValue(rte, "cmt");
         route.desc   = keepThis.getElementValue(rte, "desc");
@@ -73,21 +76,26 @@ gpxParser.prototype.parse = function (string) {
         route.type   = keepThis.getElementValue(rte, "type");
 
         let routepoints = [];
-        rte.querySelectorAll('rtept').forEach(function(rtept){
+        var rtepts = [].slice.call(rte.querySelectorAll('rtept'));
+
+        for (let idxIn in rtepts){
+            var rtept = rtepts[idxIn];
             let pt    = {};
             pt.lat    = parseFloat(rtept.getAttribute("lat"));
             pt.lon    = parseFloat(rtept.getAttribute("lon"));
             pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele"));
             routepoints.push(pt);
-        });
+        }
 
         route.distance = keepThis.calculDistance(routepoints);
         route.elevation = keepThis.calcElevation(routepoints);
         route.points = routepoints;
         keepThis.routes.push(route);
-    });
+    }
 
-    this.xmlSource.querySelectorAll('trk').forEach(function(trk){
+    var trks = [].slice.call(this.xmlSource.querySelectorAll('trk'));
+    for (let idx in trks){
+        var trk = trks[idx];
         let track = {};
 
         track.name   = keepThis.getElementValue(trk, "name");
@@ -99,18 +107,20 @@ gpxParser.prototype.parse = function (string) {
         track.type   = keepThis.getElementValue(trk, "type");
 
         let trackpoints = [];
-        trk.querySelectorAll('trkpt').forEach(function(trkpt){
+        var trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
+	    for (let idxIn in trkpts){
+            var trkpt = trkpts[idxIn];
             let pt = {};
             pt.lat = parseFloat(trkpt.getAttribute("lat"));
             pt.lon = parseFloat(trkpt.getAttribute("lon"));
             pt.ele = parseFloat(keepThis.getElementValue(trkpt, "ele"));
             trackpoints.push(pt);
-        });
+        }
         track.distance = keepThis.calculDistance(trackpoints);
         track.elevation = keepThis.calcElevation(trackpoints);
         track.points = trackpoints;
         keepThis.tracks.push(track);
-    });
+    }
 };
 
 gpxParser.prototype.getElementValue = function(parent, needle){
