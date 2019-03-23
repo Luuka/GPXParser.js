@@ -55,7 +55,7 @@ gpxParser.prototype.parse = function (string) {
         pt.name = keepThis.getElementValue(wpt, "name")
         pt.lat  = parseFloat(wpt.getAttribute("lat"));
         pt.lon  = parseFloat(wpt.getAttribute("lon"));
-        pt.ele  = parseFloat(keepThis.getElementValue(wpt, "ele"));
+        pt.ele  = parseFloat(keepThis.getElementValue(wpt, "ele")) || null;
         pt.cmt  = keepThis.getElementValue(wpt, "cmt");
         pt.desc = keepThis.getElementValue(wpt, "desc");
         keepThis.waypoints.push(pt);
@@ -103,7 +103,7 @@ gpxParser.prototype.parse = function (string) {
             let pt = {};
             pt.lat = parseFloat(trkpt.getAttribute("lat"));
             pt.lon = parseFloat(trkpt.getAttribute("lon"));
-            pt.ele = parseFloat(keepThis.getElementValue(trkpt, "ele"));
+            pt.ele = parseFloat(keepThis.getElementValue(trkpt, "ele")) || null;
             trackpoints.push(pt);
         });
         track.distance = keepThis.calculDistance(trackpoints);
@@ -179,11 +179,11 @@ gpxParser.prototype.calcElevation = function (points) {
         sum += ele;
     }
 
-    ret.max = Math.max.apply(null, elevation);
-    ret.min = Math.min.apply(null, elevation);
-    ret.pos = Math.abs(dp);
-    ret.neg = Math.abs(dm);
-    ret.avg = sum / elevation.length;
+    ret.max = Math.max.apply(null, elevation) || null;
+    ret.min = Math.min.apply(null, elevation) || null;
+    ret.pos = Math.abs(dp) || null;
+    ret.neg = Math.abs(dm) || null;
+    ret.avg = sum / elevation.length || null;
 
     return ret;
 };
