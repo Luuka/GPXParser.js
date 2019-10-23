@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>gpx-parser</title>
+    <link rel="stylesheet" href="./demo/style.css">
+    <script src="./src/gpx-parser.js"></script>
+    <script src="./demo/script.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+      integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+      crossorigin=""></script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <header>
+            <h1>GPX Parser</h1>
+            <h2>Open source GPX format JavaScript parser</h2>
+        </header>
+
+        <section role="main">
+            <form id="loadGPXFile-form">
+                <h3>Choose a GPX file</h3>
+                <input type="file" id="loadGPXFile-input">
+                <input type="submit">
+            </form>
+
+            <div id="map">
+
+            </div>
+
+            <section id="metadata">
+                <h2 id="title"></h2>
+                <div id="part-author">
+                    <h4>Author</h4>
+                    <span id="authorname"></span><span id="authoremail"></span><span id="authorlink"></span>
+                </div>
+                <div id="part-waypoints">
+                    <h4>Waypoints</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>lat</th>
+                                <th>lon</th>
+                                <th>ele</th>
+                                <th>cmt</th>
+                                <th>desc</th>
+                            </tr>
+                        </thead>
+                        <tbody id="waypoints">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div id="part-tracks">
+                    <h4>Tracks</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>desc</th>
+                                <th>distance</th>
+                                <th>Avg elevation</th>
+                                <th>Max elevation</th>
+                                <th>Min elevation</th>
+                                <th>Positive elevation difference</th>
+                                <th>Negative elevation difference</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="tracks">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div id="part-routes">
+                    <h4>Routes</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>desc</th>
+                                <th>distance</th>
+                                <th>Avg elevation</th>
+                                <th>Max elevation</th>
+                                <th>Min elevation</th>
+                                <th>Positive elevation difference</th>
+                                <th>Negative elevation difference</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="routes">
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            </div>
+
+        </section>
+</body>
+
+</html>
