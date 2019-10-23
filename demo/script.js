@@ -48,24 +48,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('title').innerHTML = gpx.metadata.name;
             }
 
-            if(gpx.metadata.author != undefined){
+            if(gpx.metadata.author != undefined && !gpx.isEmpty(gpx.metadata.author)){
+                document.getElementById('part-author').classList.add('part-visible');
+
                 if(gpx.metadata.author.name != null){
-                    document.getElementById('authorname').innerHTML = gpx.metadata.author.name;
+                    document.getElementById('authorname').innerHTML = ' | name : '+gpx.metadata.author.name;
                 }
 
                 if(gpx.metadata.author.email != undefined){
                     let email = gpx.metadata.author.email;
-                    if(email.id != null && email.domain != null){
-                        document.getElementById('authoremail').innerHTML = email.id+"@"+email.domain;
+                    if(email.id != null && email.domain != null && email.id != "" && email.domain != ""){
+                        document.getElementById('authoremail').innerHTML = " | email : "+email.id+"@"+email.domain;
                     }
                 }
 
                 if(gpx.metadata.author.link != undefined){
                     let link = gpx.metadata.author.link;
                     if(link.href != null && link.text != null){
-                        document.getElementById('authorlink').innerHTML = '<a href="'+link.href+'">'+link.text+'</a>';
+                        document.getElementById('authorlink').innerHTML = ' | <a href="'+link.href+'">Link : '+link.text+'</a>';
                     }
                 }
+            } else {
+              document.getElementById('part-author').classList.remove('part-visible');
+            }
+
+            if(gpx.waypoints.length > 0) {
+              document.getElementById('part-waypoints').classList.add('part-visible');
+            } else {
+              document.getElementById('part-waypoints').classList.remove('part-visible');
             }
 
             gpx.waypoints.forEach(function(wpt){
@@ -81,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 lon.innerHTML = wpt.lon;
 
                 let ele  = document.createElement('td');
-                ele.innerHTML = wpt.ele;
+                ele.innerHTML = wpt.ele + 'm';
 
                 let cmt  = document.createElement('td');
                 cmt.innerHTML = wpt.cmt;
@@ -102,6 +112,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             });
 
+            if(gpx.tracks.length > 0) {
+              document.getElementById('part-tracks').classList.add('part-visible');
+            } else {
+              document.getElementById('part-tracks').classList.remove('part-visible');
+            }
             gpx.tracks.forEach(function(track){
                 let tr = document.createElement('tr');
 
@@ -112,22 +127,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 desc.innerHTML = track.desc;
 
                 let distance = document.createElement('td');
-                distance.innerHTML = Math.round((track.distance.total / 1000)*100)/100;
+                distance.innerHTML = Math.round((track.distance.total / 1000)*100)/100+'km';
 
                 let avg = document.createElement('td');
-                avg.innerHTML = Math.floor(track.elevation.avg);
+                avg.innerHTML = Math.floor(track.elevation.avg)+'m';
 
                 let max = document.createElement('td');
-                max.innerHTML = Math.floor(track.elevation.max);
+                max.innerHTML = Math.floor(track.elevation.max)+'m';
 
                 let min = document.createElement('td');
-                min.innerHTML = Math.floor(track.elevation.min);
+                min.innerHTML = Math.floor(track.elevation.min)+'m';
 
                 let pos = document.createElement('td');
-                pos.innerHTML = Math.floor(track.elevation.pos);
+                pos.innerHTML = Math.floor(track.elevation.pos)+'m';
 
                 let neg = document.createElement('td');
-                neg.innerHTML = Math.floor(track.elevation.neg);
+                neg.innerHTML = Math.floor(track.elevation.neg)+'m';
 
                 tr.appendChild(name);
                 tr.appendChild(desc);
@@ -138,13 +153,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 tr.appendChild(pos);
                 tr.appendChild(neg);
 
-
                 document.getElementById('tracks').appendChild(tr);
 
                 buildPolyline(track.points);
 
             });
 
+            if(gpx.routes.length > 0) {
+              document.getElementById('part-routes').classList.add('part-visible');
+            } else {
+              document.getElementById('part-routes').classList.remove('part-visible');
+            }
             gpx.routes.forEach(function(route){
                 let tr = document.createElement('tr');
 
@@ -155,22 +174,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 desc.innerHTML = route.desc;
 
                 let distance = document.createElement('td');
-                distance.innerHTML = Math.round((route.distance.total / 1000)*100)/100;
+                distance.innerHTML = Math.round((route.distance.total / 1000)*100)/100+"km";
 
                 let avg = document.createElement('td');
-                avg.innerHTML = Math.floor(route.elevation.avg);
+                avg.innerHTML = Math.floor(route.elevation.avg)+"m";
 
                 let max = document.createElement('td');
-                max.innerHTML = Math.floor(route.elevation.max);
+                max.innerHTML = Math.floor(route.elevation.max)+"m";
 
                 let min = document.createElement('td');
-                min.innerHTML = Math.floor(route.elevation.min);
+                min.innerHTML = Math.floor(route.elevation.min)+"m";
 
                 let pos = document.createElement('td');
-                pos.innerHTML = Math.floor(route.elevation.pos);
+                pos.innerHTML = Math.floor(route.elevation.pos)+"m";
 
                 let neg = document.createElement('td');
-                neg.innerHTML = Math.floor(route.elevation.neg);
+                neg.innerHTML = Math.floor(route.elevation.neg)+"m";
 
                 tr.appendChild(name);
                 tr.appendChild(desc);
@@ -181,8 +200,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 tr.appendChild(pos);
                 tr.appendChild(neg);
 
-
                 document.getElementById('routes').appendChild(tr);
+
+                buildPolyline(route.points);
             });
 
         };

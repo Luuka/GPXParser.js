@@ -62,3 +62,11 @@ table, td, th {
 td, th {
     padding: .2rem;
 }
+
+#metadata > div {
+  display: none;
+}
+
+#metadata > div.part-visible {
+  display: block;
+}
