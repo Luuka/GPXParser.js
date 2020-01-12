@@ -45,86 +45,20 @@ var totalDistance = gpx.tracks[0].distance.total;
 | tracks | Array of Track object | Array of waypoints of tracks |
 | routes | Array of Route object | Array of waypoints of routes |
 
-
-
+The gpx-parser parser object take this form :
 - xmlSource
 - metadata
   - name
   - desc
-  - link
-    - href
-    - text
-    - type
-  - author
-    - name
-    - email
-      - id
-      - domain
-    - link
-      - href
-      - text
-      - type
+  - #Link object
+  - #Author object
   - time
 - waypoints
-  - waypoint
-    - name
-    - cmt
-    - desc
-    - lat
-    - lon
-    - ele
+  - [#Waypoint object]
 - tracks
-  - track
-    - name
-    - cmt
-    - desc
-    - src
-    - number
-    - link
-    - type
-    - points
-      - lat
-      - lon
-      - ele
-    - distance
-      - total
-      - cumul
-        - incremental values
-        - [...]
-    - elevation
-      - min
-      - max
-      - pos
-      - neg
-      - avg
-  - [track]
-    - [...]
+  - [#Track object]
 - routes
-  - route
-    - name
-    - cmt
-    - desc
-    - src
-    - number
-    - link
-    - type
-    - points
-      - lat
-      - lon
-      - ele
-    - distance
-      - total
-      - cumul
-        - incremental values
-        - [...]
-    - elevation
-      - min
-      - max
-      - pos
-      - neg
-      - avg
-  - [route]
-    - [...]
+  - [#Route object]
 
 
 
