@@ -1,14 +1,14 @@
 var gpxParser = function () {
     this.xmlSource = "";
-    this.metadata = {};
+    this.metadata  = {};
     this.waypoints = [];
-    this.tracks = [];
-    this.routes = [];
+    this.tracks    = [];
+    this.routes    = [];
 };
 
 gpxParser.prototype.parse = function (string) {
     var keepThis = this;
-    var domParser = new DOMParser();
+    var domParser = new window.DOMParser();
     this.xmlSource = domParser.parseFromString(string, 'text/xml');
 
     metadata = this.xmlSource.querySelector('metadata');
@@ -21,20 +21,19 @@ gpxParser.prototype.parse = function (string) {
         let authorElem = metadata.querySelector('author');
         if(authorElem != null){
             author.name = this.getElementValue(authorElem, "name");
-
-            author.email         = {};
-            let emailElem        = authorElem.querySelector('email');
+            author.email  = {};
+            let emailElem = authorElem.querySelector('email');
             if(emailElem != null){
-                author.email.id      = emailElem.getAttribute("id");
-                author.email.domain  = emailElem.getAttribute("domain");
+                author.email.id     = emailElem.getAttribute("id");
+                author.email.domain = emailElem.getAttribute("domain");
             }
 
             let link     = {};
             let linkElem = authorElem.querySelector('link');
             if(linkElem != null){
-                link.href    = linkElem.getAttribute('href');
-                link.text    = this.getElementValue(linkElem, "text");
-                link.type    = this.getElementValue(linkElem, "type");
+                link.href = linkElem.getAttribute('href');
+                link.text = this.getElementValue(linkElem, "text");
+                link.type = this.getElementValue(linkElem, "type");
             }
             author.link = link;
         }
@@ -72,8 +71,16 @@ gpxParser.prototype.parse = function (string) {
         route.desc   = keepThis.getElementValue(rte, "desc");
         route.src    = keepThis.getElementValue(rte, "src");
         route.number = keepThis.getElementValue(rte, "number");
-        route.link   = keepThis.getElementValue(rte, "link");
         route.type   = keepThis.getElementValue(rte, "type");
+
+        let link     = {};
+        let linkElem = rte.querySelector('link');
+        if(linkElem != null){
+            link.href = linkElem.getAttribute('href');
+            link.text = keepThis.getElementValue(linkElem, "text");
+            link.type = keepThis.getElementValue(linkElem, "type");
+        }
+        route.link = link;
 
         let routepoints = [];
         var rtepts = [].slice.call(rte.querySelectorAll('rtept'));
@@ -103,8 +110,16 @@ gpxParser.prototype.parse = function (string) {
         track.desc   = keepThis.getElementValue(trk, "desc");
         track.src    = keepThis.getElementValue(trk, "src");
         track.number = keepThis.getElementValue(trk, "number");
-        track.link   = keepThis.getElementValue(trk, "link");
         track.type   = keepThis.getElementValue(trk, "type");
+
+        let link     = {};
+        let linkElem = trk.querySelector('link');
+        if(linkElem != null){
+            link.href = linkElem.getAttribute('href');
+            link.text = keepThis.getElementValue(linkElem, "text");
+            link.type = keepThis.getElementValue(linkElem, "type");
+        }
+        track.link = link;
 
         let trackpoints = [];
         var trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
@@ -205,3 +220,104 @@ gpxParser.prototype.isEmpty = function (obj) {
     }
     return true;
 };
+
+gpxParser.prototype.toGeoJSON = function () {
+
+    var GeoJSON = {
+        "type": "FeatureCollection",
+        "features": [],
+        "properties": {
+            "name": this.metadata.name,
+            "desc": this.metadata.desc,
+            "time": this.metadata.time,
+            "author": this.metadata.author,
+            "link": this.metadata.link,
+        },
+    };
+
+    this.tracks.forEach(function(track){
+        var feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": []
+            },
+            "properties": {
+            }
+        };
+
+        feature.properties.name   = track.name;
+        feature.properties.cmt    = track.cmt;
+        feature.properties.desc   = track.desc;
+        feature.properties.src    = track.src;
+        feature.properties.number = track.number;
+        feature.properties.link   = track.link;
+        feature.properties.type   = track.type;
+
+        track.points.forEach(function(pt){
+            var geoPt = [];
+            geoPt.push(pt.lon);
+            geoPt.push(pt.lat);
+            geoPt.push(pt.ele);
+
+            feature.geometry.coordinates.push(geoPt);
+        });
+
+        GeoJSON.features.push(feature);
+    });
+
+    this.routes.forEach(function(track){
+        var feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": []
+            },
+            "properties": {
+            }
+        };
+
+        feature.properties.name   = track.name;
+        feature.properties.cmt    = track.cmt;
+        feature.properties.desc   = track.desc;
+        feature.properties.src    = track.src;
+        feature.properties.number = track.number;
+        feature.properties.link   = track.link;
+        feature.properties.type   = track.type;
+
+        track.points.forEach(function(pt){
+            var geoPt = [];
+            geoPt.push(pt.lon);
+            geoPt.push(pt.lat);
+            geoPt.push(pt.ele);
+
+            feature.geometry.coordinates.push(geoPt);
+        });
+
+        GeoJSON.features.push(feature);
+    });
+
+    this.waypoints.forEach(function(pt){
+        var feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "properties": {
+            }
+        };
+
+        feature.properties.name = pt.name;
+        feature.properties.cmt  = pt.cmt;
+        feature.properties.desc = pt.desc;
+
+        feature.geometry.coordinates = [pt.lon, pt.lat, pt.ele];
+
+        GeoJSON.features.push(feature);
+    });
+
+    return GeoJSON;
+}
+
+exports.gpxParser = gpxParser;
