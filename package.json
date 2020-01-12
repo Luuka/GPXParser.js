@@ -2,9 +2,9 @@
   "name": "gpx-parser",
   "version": "2.0.0",
   "description": "GPX file parser",
-  "main": "",
+  "main": "src/gpx-parser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/Luuka/gpx-parser/issues"
   },
-  "homepage": "https://github.com/Luuka/gpx-parser#readme"
+  "homepage": "https://github.com/Luuka/gpx-parser#readme",
+  "devDependencies": {
+    "jsdom": "^15.2.1",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^6.2.2"
+  }
 }
