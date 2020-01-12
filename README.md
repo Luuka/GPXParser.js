@@ -1,6 +1,6 @@
 # gpx-parser
 
-![](https://github.com/Luuka/gpx-parser/workflows/Node%20CI/badge.svg?branch=develop)
+![](https://github.com/Luuka/gpx-parser/workflows/master-ci/badge.svg) ![](https://github.com/Luuka/gpx-parser/workflows/develop-ci/badge.svg)
 
 *gpx-parser* is a lightweight JS library wich parse .gpx file and get or calculate some datas like
 - gpx metadatas
