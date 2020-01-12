@@ -4,7 +4,8 @@
   "description": "GPX file parser",
   "main": "src/gpx-parser.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "gendoc": "jsdoc ./src/gpx-parser.js -R README.md -d ./doc"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/Luuka/gpx-parser#readme",
   "devDependencies": {
+    "jsdoc": "^3.6.3",
     "jsdom": "^15.2.1",
     "jsdom-global": "^3.0.2",
     "mocha": "^6.2.2"
