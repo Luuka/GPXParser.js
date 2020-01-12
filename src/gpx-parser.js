@@ -320,4 +320,4 @@ gpxParser.prototype.toGeoJSON = function () {
     return GeoJSON;
 }
 
-exports.gpxParser = gpxParser;
+module.exports = gpxParser;
