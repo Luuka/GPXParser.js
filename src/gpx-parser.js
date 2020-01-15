@@ -52,7 +52,7 @@ gpxParser.prototype.parse = function (gpxstring) {
         this.metadata.author = author;
 
         let link = {};
-        let linkElem = metadata.querySelector('link');
+        let linkElem = this.queryDirectSelector(metadata, 'link');
         if(linkElem != null){
             link.href = linkElem.getAttribute('href');
             link.text = this.getElementValue(linkElem, "text");
@@ -83,7 +83,7 @@ gpxParser.prototype.parse = function (gpxstring) {
         route.desc   = keepThis.getElementValue(rte, "desc");
         route.src    = keepThis.getElementValue(rte, "src");
         route.number = keepThis.getElementValue(rte, "number");
-        route.type   = keepThis.getElementValue(rte, "type");
+        route.type   = keepThis.queryDirectSelector(rte, "type").innerHTML;
 
         let link     = {};
         let linkElem = rte.querySelector('link');
@@ -122,7 +122,7 @@ gpxParser.prototype.parse = function (gpxstring) {
         track.desc   = keepThis.getElementValue(trk, "desc");
         track.src    = keepThis.getElementValue(trk, "src");
         track.number = keepThis.getElementValue(trk, "number");
-        track.type   = keepThis.getElementValue(trk, "type");
+        track.type   = keepThis.queryDirectSelector(trk, "type").innerHTML;
 
         let link     = {};
         let linkElem = trk.querySelector('link');
@@ -159,12 +159,31 @@ gpxParser.prototype.parse = function (gpxstring) {
  * @return {} The element value
  */
 gpxParser.prototype.getElementValue = function(parent, needle){
-    let elem = parent.querySelector(" :scope > " + needle);
+    let elem = parent.querySelector(needle);
     if(elem != null){
             return elem.innerHTML;
     }
     return elem;
 }
+
+gpxParser.prototype.queryDirectSelector = function(parent, needle) {
+
+    let elements  = parent.querySelectorAll(needle);
+    let finalElem = elements[0];
+
+    if(elements.length > 1) {
+        let directChilds = parent.childNodes;
+
+        directChilds.forEach(function(elem){
+            if(elem.tagName === needle) {
+                finalElem = elem;
+            }
+        });
+    }
+
+    return finalElem;
+}
+
 /**
  * Calcul the Distance Object from an array of points
  * 
