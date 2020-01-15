@@ -83,7 +83,9 @@ gpxParser.prototype.parse = function (gpxstring) {
         route.desc   = keepThis.getElementValue(rte, "desc");
         route.src    = keepThis.getElementValue(rte, "src");
         route.number = keepThis.getElementValue(rte, "number");
-        route.type   = keepThis.queryDirectSelector(rte, "type").innerHTML;
+
+        let type     = keepThis.queryDirectSelector(rte, "type");
+        route.type   = type != null ? type.innerHTML : null;
 
         let link     = {};
         let linkElem = rte.querySelector('link');
@@ -122,7 +124,9 @@ gpxParser.prototype.parse = function (gpxstring) {
         track.desc   = keepThis.getElementValue(trk, "desc");
         track.src    = keepThis.getElementValue(trk, "src");
         track.number = keepThis.getElementValue(trk, "number");
-        track.type   = keepThis.queryDirectSelector(trk, "type").innerHTML;
+
+        let type     = keepThis.queryDirectSelector(trk, "type");
+        track.type   = type != null ? type.innerHTML : null;
 
         let link     = {};
         let linkElem = trk.querySelector('link');
@@ -146,6 +150,7 @@ gpxParser.prototype.parse = function (gpxstring) {
         track.distance = keepThis.calculDistance(trackpoints);
         track.elevation = keepThis.calcElevation(trackpoints);
         track.points = trackpoints;
+
         keepThis.tracks.push(track);
     }
 };
@@ -161,7 +166,7 @@ gpxParser.prototype.parse = function (gpxstring) {
 gpxParser.prototype.getElementValue = function(parent, needle){
     let elem = parent.querySelector(needle);
     if(elem != null){
-            return elem.innerHTML;
+        return elem.innerHTML != undefined ? elem.innerHTML : new XMLSerializer().serializeToString(elem).replace(' ', '').replace('<'+needle+'>', '').replace('</'+needle+'>', '');
     }
     return elem;
 }
@@ -174,11 +179,12 @@ gpxParser.prototype.queryDirectSelector = function(parent, needle) {
     if(elements.length > 1) {
         let directChilds = parent.childNodes;
 
-        directChilds.forEach(function(elem){
+        for(idx in directChilds) {
+            elem = directChilds[idx];
             if(elem.tagName === needle) {
                 finalElem = elem;
             }
-        });
+        }
     }
 
     return finalElem;
@@ -303,7 +309,9 @@ gpxParser.prototype.toGeoJSON = function () {
         },
     };
 
-    this.tracks.forEach(function(track){
+    for(idx in this.tracks) {
+        let track = this.tracks[idx];
+
         var feature = {
             "type": "Feature",
             "geometry": {
@@ -322,19 +330,23 @@ gpxParser.prototype.toGeoJSON = function () {
         feature.properties.link   = track.link;
         feature.properties.type   = track.type;
 
-        track.points.forEach(function(pt){
+        for(idx in track.points) {
+            let pt = track.points[idx];
+        
             var geoPt = [];
             geoPt.push(pt.lon);
             geoPt.push(pt.lat);
             geoPt.push(pt.ele);
 
             feature.geometry.coordinates.push(geoPt);
-        });
+        }
 
         GeoJSON.features.push(feature);
-    });
+    }
 
-    this.routes.forEach(function(track){
+    for(idx in this.routes) {
+        let track = this.routes[idx];
+
         var feature = {
             "type": "Feature",
             "geometry": {
@@ -353,19 +365,24 @@ gpxParser.prototype.toGeoJSON = function () {
         feature.properties.link   = track.link;
         feature.properties.type   = track.type;
 
-        track.points.forEach(function(pt){
+
+        for(idx in track.points) {
+            let pt = track.points[idx];
+        
             var geoPt = [];
             geoPt.push(pt.lon);
             geoPt.push(pt.lat);
             geoPt.push(pt.ele);
 
             feature.geometry.coordinates.push(geoPt);
-        });
+        }
 
         GeoJSON.features.push(feature);
-    });
+    }
 
-    this.waypoints.forEach(function(pt){
+    for(idx in this.waypoints) {
+        let pt = this.waypoints[idx];
+    
         var feature = {
             "type": "Feature",
             "geometry": {
@@ -383,7 +400,7 @@ gpxParser.prototype.toGeoJSON = function () {
         feature.geometry.coordinates = [pt.lon, pt.lat, pt.ele];
 
         GeoJSON.features.push(feature);
-    });
+    }
 
     return GeoJSON;
 }
