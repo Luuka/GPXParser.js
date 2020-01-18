@@ -166,11 +166,20 @@ gpxParser.prototype.parse = function (gpxstring) {
 gpxParser.prototype.getElementValue = function(parent, needle){
     let elem = parent.querySelector(needle);
     if(elem != null){
-        return elem.innerHTML != undefined ? elem.innerHTML : new XMLSerializer().serializeToString(elem).replace(' ', '').replace('<'+needle+'>', '').replace('</'+needle+'>', '');
+        return elem.innerHTML != undefined ? elem.innerHTML : elem.childNodes[0].data;
     }
     return elem;
 }
 
+
+/**
+ * Search the value of a direct child XML DOM element
+ * 
+ * @param  {Element} parent - Parent DOM Element
+ * @param  {string} needle - Name of the searched element
+ * 
+ * @return {} The element value
+ */
 gpxParser.prototype.queryDirectSelector = function(parent, needle) {
 
     let elements  = parent.querySelectorAll(needle);
@@ -275,20 +284,6 @@ gpxParser.prototype.calcElevation = function (points) {
     ret.avg = sum / elevation.length || null;
 
     return ret;
-};
-/**
- * Check if an object is empty
- * 
- * @param  {} obj - An object
- * 
- * @returns {bool} True or False
- */
-gpxParser.prototype.isEmpty = function (obj) {
-    for (var prop in obj) {
-        if (obj.hasOwnProperty(prop))
-            return false;
-    }
-    return true;
 };
 
 /**

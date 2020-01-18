@@ -4,6 +4,7 @@
   "description": "GPX file parser",
   "main": "dist/gpx-parser.min.js",
   "scripts": {
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "jsdoc": "^3.6.3",
     "jsdom": "^15.2.1",
     "jsdom-global": "^3.0.2",
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0"
   }
 }

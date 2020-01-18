@@ -135,6 +135,13 @@ describe('GPX parser', function() {
         });
     });
 
+    it('GetElementValue should be null', function(){
+
+        let elemValue = parser.getElementValue(parser.xmlSource, 'inexistant');
+
+        assert.equal(null, elemValue);
+    });
+
 });
 
 describe('GeoJSON exporter', function() {
