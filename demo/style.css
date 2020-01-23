@@ -1,72 +1,142 @@
-html, body {
-    background: white;
+* {
     box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
-    margin: 0;
+    color: #5E5E5E;
+    font-family: 'Merriweather', serif;
 }
 
-header {
-    border-bottom: 1px solid #2c3e50;
-    margin-bottom: 1rem;
+html {
+    background: url('./what-the-hex.png');
+    
 }
 
-#wrapper {
-    margin: auto;
-    padding: 1.5rem;
-    width: 1000px;
-}
-
-h1, h2, h3 , h4 , h5 {
-    font-family: 'Open Sans', sans-serif;
+html, body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 h1 {
-    color: #2c3e50;
-    font-size: 65px;
     margin: 0;
-    text-align: center;
-}
-
-h2 {
-    text-align: center;
-    font-weight: 300;
-}
-
-#map {
-    height: 400px;
-    margin-top: 2rem;
-}
-
-#loadGPXFile-form {
-    text-align: center;
-    background: #ecf0f1;
-    width: 25rem;
-    margin: auto;
+    font-size: 1.5rem;
     padding: 1rem;
 }
 
-#loadGPXFile-form h3 {
-    margin: 0 0 1rem 0;
-    font-weight: 300;
+.header-main {
+    width: 80rem;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-table {
-    width: 100%;
+.header-main img {
+    width: 30rem;
+}
+
+.header-main nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-main nav ul, .header-main nav li {
+    padding: 0;
+    margin: 0;
+}
+
+.header-main nav ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header-main nav li {
+    margin: 2rem;
+   
+}
+
+.header-main a {
+    color: #5E5E5E;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+section[role="main"] {
+    width: 80rem;
+    height: 50rem;
+    max-width: 90vw;
     background: white;
+    box-shadow: 0 0 2rem .5rem rgba(0,0,0,0.1) ;
+    margin-top: .5rem;
 }
-table, td, th {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: center;
+
+.cols {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 1rem;
 }
-td, th {
+
+.cols > div{
+    display: block;
+    width: 50%;
+    padding: .5rem;
+    line-height: 1.6rem;
+}
+
+.cols li {
     padding: .2rem;
 }
 
-#metadata > div {
-  display: none;
+.panel-blue {
+    background: #2B92BA;
+    width: 100%;
+    
 }
 
-#metadata > div.part-visible {
-  display: block;
+.demo {
+    padding: 5rem;
+    text-align: center;
+}
+
+.demo h1 {
+    color: white;
+}
+
+.demo input[type=file] {
+    display: none;
+}
+
+.demo form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.demo form > * {
+    margin: .5rem;
+}
+
+.demo label{
+    display: block;
+    background: white;
+    padding: .5rem;
+    border-radius: .3rem;
+    border: none;
+    text-align: left;
+    width: 30rem;
+}
+
+.demo input[type=submit] {
+    background: white;
+    padding: .5rem;
+    border-radius: .3rem;
+    border: none;
+    font-size: 1rem;
 }

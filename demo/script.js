@@ -16,6 +16,14 @@ function buildPolyline(points){
     map.fitBounds(tracksLayer.getBounds());
 }
 
+isEmpty = function (obj) {
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop))
+            return false;
+    }
+    return true;
+};
+
 document.addEventListener('DOMContentLoaded', function() {
 
     map = L.map('map').setView([51.505, -0.09], 5);
@@ -48,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('title').innerHTML = gpx.metadata.name;
             }
 
-            if(gpx.metadata.author != undefined && !gpx.isEmpty(gpx.metadata.author)){
+            if(gpx.metadata.author != undefined && isEmpty(gpx.metadata.author)){
                 document.getElementById('part-author').classList.add('part-visible');
 
                 if(gpx.metadata.author.name != null){
