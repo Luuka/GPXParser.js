@@ -140,3 +140,14 @@ section[role="main"] {
     border: none;
     font-size: 1rem;
 }
+
+
+.demo-content {
+    margin-top: 2rem;
+    color: white;
+}
+
+#map {
+    height: 25rem;
+    border: .4rem solid white;
+}

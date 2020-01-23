@@ -34,7 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }).addTo(map);
 
 
-    document.getElementById("loadGPXFile-form").addEventListener('submit', function(e){
+    document.querySelector(".demo input[type=file]").addEventListener('change', function(e){
+        document.querySelector('.demo label').innerHTML = e.target.files[0].name;
+    });
+
+    document.querySelector(".demo form").addEventListener('submit', function(e){
         e.preventDefault();
 
         tracksLayer.clearLayers();
@@ -48,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("tracks").innerHTML = "";
         document.getElementById("routes").innerHTML = "";
 
-        let file = document.getElementById('loadGPXFile-input').files[0];
+        let file = document.querySelector(".demo input[type=file]").files[0];
         var reader = new FileReader();
         reader.onload = function(event) {
             gpx.parse(reader.result)
