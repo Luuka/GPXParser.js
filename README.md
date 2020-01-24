@@ -1,4 +1,4 @@
-![GPXParser](https://octodex.github.com/images/yaktocat.png)
+![GPXParser](https://raw.githubusercontent.com/Luuka/gpx-parser/feature/new-demo/demo/Logo.png)
 
 # GPXParser
 
