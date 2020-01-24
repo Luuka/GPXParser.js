@@ -137,7 +137,7 @@ section[role="main"] {
     width: 30rem;
 }
 
-.demo input[type=submit] {
+.demo input[type=submit], button{
     background: white;
     padding: .5rem;
     border-radius: .3rem;
