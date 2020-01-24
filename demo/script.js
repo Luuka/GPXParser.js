@@ -60,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('title').innerHTML = gpx.metadata.name;
             }
 
-            if(gpx.metadata.author != undefined && isEmpty(gpx.metadata.author)){
+            if(gpx.metadata.author != undefined && !isEmpty(gpx.metadata.author)){
                 document.getElementById('part-author').classList.add('part-visible');
 
                 if(gpx.metadata.author.name != null){
-                    document.getElementById('authorname').innerHTML = ' | name : '+gpx.metadata.author.name;
+                    document.getElementById('authorname').innerHTML = 'name : '+gpx.metadata.author.name;
                 }
 
                 if(gpx.metadata.author.email != undefined){
@@ -215,6 +215,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('routes').appendChild(tr);
 
                 buildPolyline(route.points);
+
+                document.querySelector('.demo-content').classList.add('open');
             });
 
         };

@@ -1,6 +1,5 @@
 * {
     box-sizing: border-box;
-    color: #5E5E5E;
     font-family: 'Merriweather', serif;
 }
 
@@ -14,12 +13,18 @@ html, body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    color: #5E5E5E;
 }
 
 h1 {
     margin: 0;
     font-size: 1.5rem;
     padding: 1rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    padding: 0 2rem;  
 }
 
 .header-main {
@@ -67,7 +72,6 @@ h1 {
 
 section[role="main"] {
     width: 80rem;
-    height: 50rem;
     max-width: 90vw;
     background: white;
     box-shadow: 0 0 2rem .5rem rgba(0,0,0,0.1) ;
@@ -145,9 +149,44 @@ section[role="main"] {
 .demo-content {
     margin-top: 2rem;
     color: white;
+    height: 0;
+    overflow: hidden;
+    transition: .5S ease height;
+}
+
+.demo-content.open {
+    height: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.demo-content td, .demo-content th {
+    border: .1rem solid white;
+    border-collapse: collapse;
+    padding: .3rem;
 }
 
 #map {
     height: 25rem;
     border: .4rem solid white;
+}
+
+pre {
+    margin: 0;
+}
+
+footer {
+    padding: 3rem;
+    text-align: center;
+    background: #2B92BA;
+    color: white;
+    font-weight: 700;
+    margin-top: 2rem;
+}
+
+footer a {
+    color: white;
 }

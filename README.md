@@ -1,4 +1,6 @@
-# gpx-parser
+![GPXParser](https://octodex.github.com/images/yaktocat.png)
+
+# GPXParser
 
 ![](https://github.com/Luuka/gpx-parser/workflows/master-ci/badge.svg) ![](https://github.com/Luuka/gpx-parser/workflows/develop-ci/badge.svg)
 

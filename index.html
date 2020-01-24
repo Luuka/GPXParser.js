@@ -9,6 +9,10 @@
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="crossorigin=""></script>
+        <script src="demo/highlight/highlight.pack.js"></script>
+        <link rel="stylesheet" href="demo/highlight/styles/default.css">
+        <link rel="stylesheet" href="demo/highlight/styles/">
+        <script>hljs.initHighlightingOnLoad();</script>
     </head>
     <body>
         <header class="header-main">
@@ -17,8 +21,8 @@
             </a>
             <nav>
                 <ul>
-                    <li><a href="">GitHub</a></li>
-                    <li><a href="">Documentation</a></li>
+                    <li><a href="https://github.com/Luuka/gpx-parser">GitHub</a></li>
+                    <li><a href="./doc/">Documentation</a></li>
                 </ul>
             </nav>
         </header>
@@ -125,6 +129,27 @@
                 </section>
 
             </section>
+            <section>
+                <h1>How to use ?</h1>
+                <h2>Load JavaScript file</h2>
+                <pre><code class="html">
+                        &lt;script src="./js/gpx-parser.js"&gt;&lt;/script&gt;
+                    </code></pre>
+
+                <h2>Create and parse GPX</h2>
+                <pre><code class="javascript">
+                        var gpx = new gpxParser(); //Create gpxParser Object
+                        gpx.parse("&lt;xml&gt;&lt;gpx&gt;&lt;/gpx&gt;&lt;/xml&gt;"); //parse gpx file from string data
+                </code></pre>
+
+                <h2>Use the gpxParser Object</h2>
+                <pre><code class="javascript">
+                        var totalDistance = gpx.tracks[0].distance.total;
+                </code></pre>
+            </section>
+            <footer>
+                <p>Lucas Trebouet Voisin - MIT Licence - <a href="https://github.com/Luuka/gpx-parser">GitHub</a></p>
+            </footer>
         </section>
     </body>
 </html>
