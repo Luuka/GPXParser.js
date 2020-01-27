@@ -8,7 +8,7 @@ gulp.task('test', function() {
 });
 
 gulp.task('minify', function(){
-    return gulp.src('./src/gpx-parser.js')
+    return gulp.src('./src/GPXParser.js')
     .pipe(minify({
         ext:{
             min:'.min.js'
@@ -21,7 +21,7 @@ gulp.task('minify', function(){
 gulp.task('doc', function (cb) {
     var config = require('./jsdoc.json');
 
-    return gulp.src(['README.md', './src/gpx-parser.js'], {read: false}).pipe(jsdoc(config, cb));
+    return gulp.src(['README.md', './src/GPXParser.js'], {read: false}).pipe(jsdoc(config, cb));
 });
 
 gulp.task('build', gulp.series('test', 'minify', 'doc'));

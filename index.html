@@ -1,111 +1,136 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <title>gpx-parser</title>
-    <link rel="stylesheet" href="./demo/style.css">
-    <script src="./src/gpx-parser.js"></script>
-    <script src="./demo/script.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-   crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-      integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-      crossorigin=""></script>
-</head>
-
-<body>
-
-    <div id="wrapper">
-
-        <header>
-            <h1>GPX Parser</h1>
-            <h2>Open source GPX format JavaScript parser</h2>
+    <head>
+        <meta charset="UTF-8">
+        <title>GPXParser | OpenSource GPX format JavaScript parser</title>
+        <link rel="icon" type="image/png" sizes="32x32" href="demo/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="demo/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="demo/favicon/favicon-16x16.png">
+        <link rel="stylesheet" href="./demo/style.css">
+        <script src="./src/GPXParser.js"></script>
+        <script src="demo/vue.js"></script>
+        <script src="./demo/script.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="crossorigin=""></script>
+        <script src="demo/highlight/highlight.pack.js"></script>
+        <link rel="stylesheet" href="demo/highlight/styles/default.css">
+        <link rel="stylesheet" href="demo/highlight/styles/">
+        <script>hljs.initHighlightingOnLoad();</script>
+    </head>
+    <body>
+        <header class="header-main">
+            <a href="">
+                <img src="./demo/Logo.png" alt="">
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="https://github.com/Luuka/gpx-parser">GitHub</a></li>
+                    <li><a href="./doc/">Documentation</a></li>
+                </ul>
+            </nav>
         </header>
-
         <section role="main">
-            <form id="loadGPXFile-form">
-                <h3>Choose a GPX file</h3>
-                <input type="file" id="loadGPXFile-input">
-                <input type="submit">
-            </form>
-
-            <div id="map">
-
-            </div>
-
-            <section id="metadata">
-                <h2 id="title"></h2>
-                <div id="part-author">
-                    <h4>Author</h4>
-                    <span id="authorname"></span><span id="authoremail"></span><span id="authorlink"></span>
-                </div>
-                <div id="part-waypoints">
-                    <h4>Waypoints</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>name</th>
-                                <th>lat</th>
-                                <th>lon</th>
-                                <th>ele</th>
-                                <th>cmt</th>
-                                <th>desc</th>
-                            </tr>
-                        </thead>
-                        <tbody id="waypoints">
-
-                        </tbody>
-                    </table>
-                </div>
-                <div id="part-tracks">
-                    <h4>Tracks</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>name</th>
-                                <th>desc</th>
-                                <th>distance</th>
-                                <th>Avg elevation</th>
-                                <th>Max elevation</th>
-                                <th>Min elevation</th>
-                                <th>Positive elevation difference</th>
-                                <th>Negative elevation difference</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="tracks">
-
-                        </tbody>
-                    </table>
-                </div>
-                <div id="part-routes">
-                    <h4>Routes</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>name</th>
-                                <th>desc</th>
-                                <th>distance</th>
-                                <th>Avg elevation</th>
-                                <th>Max elevation</th>
-                                <th>Min elevation</th>
-                                <th>Positive elevation difference</th>
-                                <th>Negative elevation difference</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="routes">
-
-                        </tbody>
-                    </table>
+            <section class="introduction">
+                <h1>Introduction</h1>
+                <div class="cols">
+                    <div>
+                        <p>
+                            GPXParser is a JavaScript library designed to help developers to parse and use data stored with the GPX format. 
+                            <br>
+                            It allow you to retrieve every data stored in your GPX formatted file by producing an easy to use JavaScript object structure.
+                            <br>
+                            Moreover, GPXParser is more than a simple XML parser, it also compute data from positioning and elevation statements to useful numeric data.
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <strong>GPX Parser retrieve and compute various data :</strong>
+                        </p>
+                        <ul>
+                            <li>Tracks and routes geographic coordinates</li>  
+                            <li>Elevation : gain, lose, average, min, max</li> 
+                            <li>Distance : Total and partial</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
-            </div>
+            <section class="panel-blue demo" id="demo">
+                <h1>Start the demo</h1>
+                <form v-on:submit.prevent>
+                    <label for="inputFile">{{ inputLabel }}</label>
+                    <input type="file" v-on:change="onChooseGPX" id="inputFile">
+                    <button id="demogpx" v-on:click="onLoadGPX">Start the demo</button>
+                    <button id="demofilegpx" v-on:click="onLoadDemoGPX">Load a demo gpx file</button>
+                </form>
+                <div id="map"></div>
+                <section v-if="gpxParser != null" class="demo-content">
+                    <h2 v-if="!isEmpty(gpxParser.metadata)">General metadata</h2>
+                    <div class="cards">
+                        <div class="card" v-if="!isEmpty(gpxParser.metadata)">
+                            <h3 v-if="gpxParser.metadata.name != null">{{ gpxParser.metadata.name }}</h3>
+                            <p v-if="gpxParser.metadata.desc != null">{{ gpxParser.metadata.desc }}</p>
+                            <p v-if="gpxParser.metadata.time != null">{{ gpxParser.metadata.time }}</p>
+                        </div>
+                        <div class="card" v-if="gpxParser.metadata.author != null && !isEmpty(gpxParser.metadata.author)">
+                            <h3>{{ gpxParser.metadata.author.name }}</h3>
+                            <p>{{ gpxParser.metadata.author.email.id }}@{{ gpxParser.metadata.author.email.domain }}</p>
+                            <p><a :href="gpxParser.metadata.author.link.href">{{ gpxParser.metadata.author.link.text }}</a></p>
+                        </div>
+                    </div>
+                    <h2 v-if="gpxParser.waypoints.length > 0">Waypoints</h2>
+                    <div class="cards">
+                        <div class="card" v-for="waypoint in gpxParser.waypoints">
+                            <h3>{{ waypoint.name }}</h3>
+                            <p>Latitude : {{ waypoint.lat }}</p>
+                            <p>Longitude : {{ waypoint.lon }}</p>
+                        </div>
+                    </div>
+                    <h2 v-if="gpxParser.tracks.concat(gpxParser.routes).length > 0">Tracks and Routes</h2>
+                    <div class="cards">
+                        <div class="card" v-for="track in gpxParser.tracks.concat(gpxParser.routes)">
+                            <h3>{{ track.name }}</h3>
+                            <p>Distance : {{ Math.floor(track.distance.total/1000) }}km</p>
+                            <p>Elevation :</p>
+                            <ul>
+                                <li>Avg : {{ Math.floor(track.elevation.avg) }}m</li>
+                                <li>Max : {{ Math.floor(track.elevation.max) }}m</li>
+                                <li>Min : {{ Math.floor(track.elevation.min) }}m</li>
+                                <li>Positive : {{ Math.floor(track.elevation.pos) }}m</li>
+                                <li>Negative : {{ Math.floor(track.elevation.neg) }}m</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
 
+            </section>
+            <section>
+                <h1>How to use ?</h1>
+                <h2>Load JavaScript file</h2>
+                <pre><code class="html">
+                        &lt;script src="./js/GPXParser.js"&gt;&lt;/script&gt;
+                    </code></pre>
+
+                <h2>Create and parse GPX</h2>
+                <pre><code class="javascript">
+                        let gpx = new gpxParser(); //Create gpxParser Object
+                        gpx.parse("&lt;xml&gt;&lt;gpx&gt;&lt;/gpx&gt;&lt;/xml&gt;"); //parse gpx file from string data
+                </code></pre>
+
+                <h2>Use the gpxParser Object</h2>
+                <pre><code class="javascript">
+                        let totalDistance = gpx.tracks[0].distance.total;
+                        gpx.tracks[0].points.push([lat, lon]);
+                </code></pre>
+
+                <h2>Export gpxParser Objecto to GEOJson</h2>
+                <pre><code class="javascript">
+                        let geoJSON = gpx.toGeoJSON();
+                </code></pre>
+            </section>
+            <footer>
+                <p>Lucas Trebouet Voisin - <a href="https://github.com/Luuka/GPXParser.js/blob/master/LICENSE">MIT Licence</a> - <a href="https://github.com/Luuka/GPXParser.js">GitHub</a></p>
+            </footer>
         </section>
-</body>
-
+    </body>
 </html>
