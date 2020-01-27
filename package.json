@@ -1,6 +1,6 @@
 {
-  "name": "gpx-parser",
-  "version": "2.0.0",
+  "name": "GPXParser.js",
+  "version": "3.0.0",
   "description": "GPX file parser",
   "main": "dist/GPXParser.min.js",
   "scripts": {
@@ -12,7 +12,10 @@
   },
   "keywords": [
     "gpx",
-    "parser"
+    "parser",
+    "GPS",
+    "Positioning",
+    "GEOJson"
   ],
   "author": "Lucas Trebouet Voisin",
   "license": "MIT",
