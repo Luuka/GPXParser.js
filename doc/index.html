@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="gpxParser.html">gpxParser</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><p><img src="https://raw.githubusercontent.com/Luuka/gpx-parser/feature/new-demo/demo/Logo.png" alt="GPXParser"></p>
+<h1>GPXParser.js</h1>
+<p><img src="https://github.com/Luuka/gpx-parser/workflows/master-ci/badge.svg" alt=""> <img src="https://github.com/Luuka/gpx-parser/workflows/develop-ci/badge.svg" alt=""></p>
+<p><em>GPXParser.js</em> is a lightweight JS library wich parse .gpx file and get or compute various datas like</p>
+<ul>
+<li>GPX metadata</li>
+<li>total and cumulate distances</li>
+<li>min, max, average, positive and negative height différence</li>
+</ul>
+<h1>GPX ? What is this ?</h1>
+<p>Wikipedia say :</p>
+<blockquote>
+<p>GPX, or GPS Exchange Format, is an XML schema designed as a common GPS data format for software applications.</p>
+</blockquote>
+<p>gpx files are based on xml with specific tags and attributes</p>
+<p>For more information about gpx format see http://www.topografix.com/gpx_manual.asp</p>
+<h1>How to do</h1>
+<h3>Load JavaScript file</h3>
+<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;./js/GPXParser.js&quot;>&lt;/script>
+</code></pre>
+<h3>Create and parse file</h3>
+<pre class="prettyprint source lang-js"><code>var gpx = new gpxParser(); //Create gpxParser Object
+gpx.parse(&quot;&lt;xml>&lt;gpx>&lt;/gpx>&lt;/xml>&quot;); //parse gpx file from string data
+</code></pre>
+<h3>Use the gpx Object</h3>
+<pre class="prettyprint source lang-js"><code>var totalDistance = gpx.tracks[0].distance.total;
+</code></pre>
+<h3>Export gpxParser Objecto to GeoJSON</h3>
+<pre class="prettyprint source lang-js"><code>let geoJSON = gpx.toGeoJSON();
+</code></pre>
+<h1>Documentation</h1>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xmlSource</td>
+<td>XML</td>
+<td>XML Object parsed from gpx string file</td>
+</tr>
+<tr>
+<td>metadata</td>
+<td>Metadata object</td>
+<td>File metadata</td>
+</tr>
+<tr>
+<td>waypoints</td>
+<td>Array of Waypoint object</td>
+<td>Array of waypoints</td>
+</tr>
+<tr>
+<td>tracks</td>
+<td>Array of Track object</td>
+<td>Array of waypoints of tracks</td>
+</tr>
+<tr>
+<td>routes</td>
+<td>Array of Route object</td>
+<td>Array of waypoints of routes</td>
+</tr>
+</tbody>
+</table>
+<h2>Metadata object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>File name</td>
+</tr>
+<tr>
+<td>desc</td>
+<td>String</td>
+<td>Description</td>
+</tr>
+<tr>
+<td>link</td>
+<td>Link object</td>
+<td>Web address</td>
+</tr>
+<tr>
+<td>author</td>
+<td>Float</td>
+<td>Author object</td>
+</tr>
+<tr>
+<td>time</td>
+<td>DateTime</td>
+<td>Time</td>
+</tr>
+</tbody>
+</table>
+<h2>Waypoint object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Point name</td>
+</tr>
+<tr>
+<td>cmt</td>
+<td>String</td>
+<td>Comment</td>
+</tr>
+<tr>
+<td>desc</td>
+<td>String</td>
+<td>Point description</td>
+</tr>
+<tr>
+<td>lat</td>
+<td>Float</td>
+<td>Point latitute</td>
+</tr>
+<tr>
+<td>lon</td>
+<td>Float</td>
+<td>Point longitude</td>
+</tr>
+<tr>
+<td>ele</td>
+<td>Float</td>
+<td>Point elevation</td>
+</tr>
+</tbody>
+</table>
+<h2>Track object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Point name</td>
+</tr>
+<tr>
+<td>cmt</td>
+<td>String</td>
+<td>Comment</td>
+</tr>
+<tr>
+<td>desc</td>
+<td>String</td>
+<td>Point description</td>
+</tr>
+<tr>
+<td>src</td>
+<td>String</td>
+<td>Used device</td>
+</tr>
+<tr>
+<td>number</td>
+<td>String</td>
+<td>Track identifier</td>
+</tr>
+<tr>
+<td>link</td>
+<td>String</td>
+<td>Link to a web address</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Track type</td>
+</tr>
+<tr>
+<td>points</td>
+<td>Array</td>
+<td>Points object array</td>
+</tr>
+<tr>
+<td>distance</td>
+<td>Distance Object</td>
+<td>Distance informations about the Route</td>
+</tr>
+<tr>
+<td>elevation</td>
+<td>Elevation Object</td>
+<td>Elevation informations about the Route</td>
+</tr>
+</tbody>
+</table>
+<h2>Route object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Point name</td>
+</tr>
+<tr>
+<td>cmt</td>
+<td>String</td>
+<td>Comment</td>
+</tr>
+<tr>
+<td>desc</td>
+<td>String</td>
+<td>Point description</td>
+</tr>
+<tr>
+<td>src</td>
+<td>String</td>
+<td>Used device</td>
+</tr>
+<tr>
+<td>number</td>
+<td>String</td>
+<td>Track identifier</td>
+</tr>
+<tr>
+<td>link</td>
+<td>String</td>
+<td>Link to a web address</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Route type</td>
+</tr>
+<tr>
+<td>points</td>
+<td>Array</td>
+<td>Points object array</td>
+</tr>
+<tr>
+<td>distance</td>
+<td>Distance Object</td>
+<td>Distance informations about the Route</td>
+</tr>
+<tr>
+<td>elevation</td>
+<td>Elevation Object</td>
+<td>Elevation informations about the Route</td>
+</tr>
+</tbody>
+</table>
+<h2>Point object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lat</td>
+<td>Float</td>
+<td>Point latitute</td>
+</tr>
+<tr>
+<td>lon</td>
+<td>Float</td>
+<td>Point longitude</td>
+</tr>
+<tr>
+<td>ele</td>
+<td>Float</td>
+<td>Point elevation</td>
+</tr>
+</tbody>
+</table>
+<h2>Distance object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>total</td>
+<td>Float</td>
+<td>Total distance of the Route/Track</td>
+</tr>
+<tr>
+<td>cumul</td>
+<td>Float</td>
+<td>Cumulative distance at each point of the Route/Track</td>
+</tr>
+</tbody>
+</table>
+<h2>Elevation object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>max</td>
+<td>Float</td>
+<td>Maximum elevation</td>
+</tr>
+<tr>
+<td>min</td>
+<td>Float</td>
+<td>Minimum elevation</td>
+</tr>
+<tr>
+<td>pos</td>
+<td>Float</td>
+<td>Positive elevation difference</td>
+</tr>
+<tr>
+<td>neg</td>
+<td>Float</td>
+<td>Negative elevation difference</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>Float</td>
+<td>Average elevation</td>
+</tr>
+</tbody>
+</table>
+<h2>Author object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Author name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email object</td>
+<td>Email address of the author</td>
+</tr>
+<tr>
+<td>link</td>
+<td>Link object</td>
+<td>Web address</td>
+</tr>
+</tbody>
+</table>
+<h2>Email object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Email id</td>
+</tr>
+<tr>
+<td>domain</td>
+<td>String</td>
+<td>Email domain</td>
+</tr>
+</tbody>
+</table>
+<h2>Link  object</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>href</td>
+<td>String</td>
+<td>Web address</td>
+</tr>
+<tr>
+<td>text</td>
+<td>String</td>
+<td>Link text</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Link type</td>
+</tr>
+</tbody>
+</table></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+	
+		on 2020-01-27T22:19:42+01:00
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : false,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

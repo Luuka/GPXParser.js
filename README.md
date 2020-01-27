@@ -1,11 +1,15 @@
-# gpx-parser
+![GPXParser](https://raw.githubusercontent.com/Luuka/gpx-parser/feature/new-demo/demo/Logo.png)
 
-*gpx-parser* is a lightweight JS library wich parse .gpx file and get or calculate some datas like
-- gpx metadatas
+# GPXParser.js
+
+![](https://github.com/Luuka/gpx-parser/workflows/master-ci/badge.svg) ![](https://github.com/Luuka/gpx-parser/workflows/develop-ci/badge.svg)
+
+*GPXParser.js* is a lightweight JS library wich parse .gpx file and get or compute various datas like
+- GPX metadata
 - total and cumulate distances
 - min, max, average, positive and negative height différence
 
-# gpx ? What is this ?
+# GPX ? What is this ?
 
 Wikipedia say :
 > GPX, or GPS Exchange Format, is an XML schema designed as a common GPS data format for software applications.
@@ -18,7 +22,7 @@ For more information about gpx format see http://www.topografix.com/gpx_manual.a
 
 ### Load JavaScript file
 ```html
-<script src="./js/gpx-parser.js"></script>
+<script src="./js/GPXParser.js"></script>
 ```
 
 ### Create and parse file
@@ -33,6 +37,12 @@ gpx.parse("<xml><gpx></gpx></xml>"); //parse gpx file from string data
 var totalDistance = gpx.tracks[0].distance.total;
 ```
 
+### Export gpxParser Objecto to GeoJSON
+
+```js
+let geoJSON = gpx.toGeoJSON();
+```           
+
 # Documentation
 
 | Property  | Type | Description|
@@ -42,89 +52,6 @@ var totalDistance = gpx.tracks[0].distance.total;
 | waypoints | Array of Waypoint object | Array of waypoints |
 | tracks | Array of Track object | Array of waypoints of tracks |
 | routes | Array of Route object | Array of waypoints of routes |
-
-
-
-- xmlSource
-- metadata
-  - name
-  - desc
-  - link
-    - href
-    - text
-    - type
-  - author
-    - name
-    - email
-      - id
-      - domain
-    - link
-      - href
-      - text
-      - type
-  - time
-- waypoints
-  - waypoint
-    - name
-    - cmt
-    - desc
-    - lat
-    - lon
-    - ele
-- tracks
-  - track
-    - name
-    - cmt
-    - desc
-    - src
-    - number
-    - link
-    - type
-    - points
-      - lat
-      - lon
-      - ele
-    - distance
-      - total
-      - cumul
-        - incremental values
-        - [...]
-    - elevation
-      - min
-      - max
-      - pos
-      - neg
-      - avg
-  - [track]
-    - [...]
-- routes
-  - route
-    - name
-    - cmt
-    - desc
-    - src
-    - number
-    - link
-    - type
-    - points
-      - lat
-      - lon
-      - ele
-    - distance
-      - total
-      - cumul
-        - incremental values
-        - [...]
-    - elevation
-      - min
-      - max
-      - pos
-      - neg
-      - avg
-  - [route]
-    - [...]
-
-
 
 ## Metadata object
 

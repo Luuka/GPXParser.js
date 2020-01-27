@@ -1,23 +1,37 @@
 {
-  "name": "gpx-parser",
-  "version": "2.0.0",
+  "name": "GPXParser.js",
+  "version": "3.0.0",
   "description": "GPX file parser",
-  "main": "",
+  "main": "dist/GPXParser.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Luuka/gpx-parser.git"
+    "url": "git+https://github.com/Luuka/GPXParser.js.git"
   },
   "keywords": [
     "gpx",
-    "parser"
+    "parser",
+    "GPS",
+    "Positioning",
+    "GEOJson"
   ],
   "author": "Lucas Trebouet Voisin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Luuka/gpx-parser/issues"
+    "url": "https://github.com/Luuka/GPXParser.js/issues"
   },
-  "homepage": "https://github.com/Luuka/gpx-parser#readme"
+  "homepage": "https://github.com/Luuka/GPXParser.js#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-jsdoc3": "^2.0.0",
+    "gulp-minify": "^3.1.0",
+    "gulp-mocha": "^7.0.2",
+    "jsdoc": "^3.6.3",
+    "jsdom": "^15.2.1",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0"
+  }
 }
