@@ -27,6 +27,10 @@ h2 {
     padding: 0 2rem;  
 }
 
+h3 {
+    margin: 0;
+}
+
 .header-main {
     width: 80rem;
     max-width: 90vw;
@@ -104,7 +108,7 @@ section[role="main"] {
 }
 
 .demo {
-    padding: 5rem;
+    padding: 3rem;
     text-align: center;
 }
 
@@ -123,40 +127,56 @@ section[role="main"] {
     align-items: center;
 }
 
-.demo form > * {
-    margin: .5rem;
-}
-
 .demo label{
     display: block;
     background: white;
     padding: .5rem;
+    margin: .5rem;
     border-radius: .3rem;
     border: none;
     text-align: left;
     width: 30rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
-.demo input[type=submit], button{
+.demo button {
     background: white;
     padding: .5rem;
+    margin: .5rem;
     border-radius: .3rem;
     border: none;
     font-size: 1rem;
 }
 
-
-.demo-content {
-    margin-top: 2rem;
-    color: white;
-    height: 0;
-    overflow: hidden;
-    transition: .5S ease height;
+.demo-content h2 {
+    text-align: left;
+    color: white;;
 }
 
-.demo-content.open {
-    height: auto;
+.cards {
+    display: flex;
+    flex-direction: row;
 }
+
+.card {
+    width: 33%;
+    min-height: 5rem;
+    background: white;
+    margin: .5rem .5rem 0 0;
+    padding: .5rem;
+    text-align: left;
+}
+
+.card ul, .card li {
+    margin: 0 1.5rem;
+    padding: 0;
+}
+.card p, .card li {
+    margin: .3rem .5rem;
+    font-size: .8rem;
+}
+
 
 table {
     border-collapse: collapse;
@@ -172,6 +192,7 @@ table {
 #map {
     height: 25rem;
     border: .4rem solid white;
+    margin-top: 1rem;
 }
 
 pre {
