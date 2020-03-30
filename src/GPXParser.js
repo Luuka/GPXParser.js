@@ -3,13 +3,18 @@
  * 
  * @constructor
  */
-var gpxParser = function () {
+let gpxParser = function () {
     this.xmlSource = "";
     this.metadata  = {};
     this.waypoints = [];
     this.tracks    = [];
     this.routes    = [];
 };
+
+gpxParser.SAMPLING_MODE = {
+    INDEX: 'index',
+    DISTANCE: 'distance'
+}
 
 /**
  * Parse a gpx formatted string to a GPXParser Object
@@ -18,9 +23,15 @@ var gpxParser = function () {
  * 
  * @return {gpxParser} A GPXParser object
  */
-gpxParser.prototype.parse = function (gpxstring) {
-    var keepThis = this;
-    var domParser = new window.DOMParser();
+gpxParser.prototype.parse = function (gpxstring, config = {}) {
+
+    let keepThis = this;
+    config = {
+        samplingMode: config.samplingMode || 'index',
+        sampling: config.sampling || 1,
+    };
+
+    let domParser = new window.DOMParser();
     this.xmlSource = domParser.parseFromString(gpxstring, 'text/xml');
 
     metadata = this.xmlSource.querySelector('metadata');
@@ -108,9 +119,11 @@ gpxParser.prototype.parse = function (gpxstring) {
             routepoints.push(pt);
         }
 
-        route.distance = keepThis.calculDistance(routepoints);
+        route.distance  = keepThis.calculDistance(routepoints);
         route.elevation = keepThis.calcElevation(routepoints);
-        route.points = routepoints;
+        route.slopes    = keepThis.calculSlope(routepoints, route.distance.cumul, config.samplingMode, config.sampling);
+        route.points    = routepoints;
+
         keepThis.routes.push(route);
     }
 
@@ -147,9 +160,10 @@ gpxParser.prototype.parse = function (gpxstring) {
             pt.ele = parseFloat(keepThis.getElementValue(trkpt, "ele")) || null;
             trackpoints.push(pt);
         }
-        track.distance = keepThis.calculDistance(trackpoints);
+        track.distance  = keepThis.calculDistance(trackpoints);
         track.elevation = keepThis.calcElevation(trackpoints);
-        track.points = trackpoints;
+        track.slopes    = keepThis.calculSlope(trackpoints, track.distance.cumul, config.samplingMode, config.sampling);
+        track.points    = trackpoints;
 
         keepThis.tracks.push(track);
     }
@@ -285,6 +299,38 @@ gpxParser.prototype.calcElevation = function (points) {
 
     return ret;
 };
+
+
+gpxParser.prototype.calculSlope = function(points, cumul, samplingMode, sampling) {
+    let slopes = [];
+    let tempSlopes = [];
+    let stepDistance = 0;
+
+    for (var i = 0; i < points.length - 1; i++) {
+        let point = points[i];
+        let nextPoint = points[i+1];
+        let elevationDiff = nextPoint.ele - point.ele;
+        let distance = cumul[i+1] - cumul[i];
+
+        let slope = (elevationDiff * 100) / distance;
+        tempSlopes.push(slope);
+
+        if (samplingMode == gpxParser.SAMPLING_MODE.DISTANCE) {
+            if (stepDistance+sampling <= distance || i == points.length - 1) {
+                slopes.push(tempSlopes.reduce((a,b) => a + b, 0) / tempSlopes.length);
+                tempSlopes = [];
+                stepDistance += sampling;
+            }
+        } else if (samplingMode == gpxParser.SAMPLING_MODE.INDEX) {
+            if (i%sampling == 0 || i == points.length - 1) {
+                slopes.push(tempSlopes.reduce((a,b) => a + b, 0) / tempSlopes.length);
+                tempSlopes = [];
+            } 
+        }
+    }
+
+    return slopes;
+}
 
 /**
  * Export the GPX object to a GeoJSON formatted Object
