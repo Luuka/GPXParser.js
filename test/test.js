@@ -142,7 +142,29 @@ describe('GPX parser', function() {
         assert.equal(null, elemValue);
     });
 
+    it('should compute slopes with index sampling mode', function(){
+        let parserSlopesIdx = new gpxParser();    
+        let config = {
+            samplingMode: gpxParser.SAMPLING_MODE.INDEX,
+            sampling: 2,
+        };
+
+        parserSlopesIdx.parse(gpxDemo, config);
+        assert.equal(102, parserSlopesIdx.tracks[0].slopes.length);
+    });
+    
+    it('should compute slopes with distance sampling mode', function(){
+        let parserSlopesDistance = new gpxParser();    
+        let configDistance = {
+            samplingMode: gpxParser.SAMPLING_MODE.DISTANCE,
+            sampling: 100,
+        };
+
+        parserSlopesDistance.parse(gpxDemo, configDistance);
+        assert.equal(53, parserSlopesDistance.tracks[0].slopes.length);
+    });
 });
+
 
 describe('GeoJSON exporter', function() {
     let parser = new gpxParser();
