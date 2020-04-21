@@ -235,6 +235,7 @@ gpxParser.prototype.calculDistance = function(points) {
 
     return distance;
 }
+
 /**
  * Calcul Distance between two points with lat and lon
  * 
@@ -300,8 +301,20 @@ gpxParser.prototype.calcElevation = function (points) {
     return ret;
 };
 
-
-gpxParser.prototype.calculSlope = function(points, cumul, samplingMode, sampling) {
+/**
+ * Generate slopes Object from an array of Points and an array of Cumulative distance 
+ * Work with 2 sampling modes :
+ *  - gpxParser.SAMPLING_MODE.INDEX : Slopes are calculated between each <sampling> points
+ *  - gpxParser.SAMPLING_MODE.DISTANCE : Slopes are calculated between each <sampling> meters
+ * 
+ * @param  {} points - An array of points with ele property
+ * @param  {} cumul - An array of cumulative distance
+ * @param  {} samplingMode - Sampling Mode (gpxParser.SAMPLING_MODE)
+ * @param  {} sampling - Sampling value
+ * 
+ * @returns {SlopeObject} An array of slopes
+ */
+gpxParser.prototype.calculSlope = function(points, cumul, samplingMode, sampling, average) {
     let slopes = [];
     let tempSlopes = [];
     let stepDistance = 0;
@@ -316,10 +329,11 @@ gpxParser.prototype.calculSlope = function(points, cumul, samplingMode, sampling
         tempSlopes.push(slope);
 
         if (samplingMode == gpxParser.SAMPLING_MODE.DISTANCE) {
-            if (stepDistance+sampling <= distance || i == points.length - 1) {
+            stepDistance += distance;
+            if (stepDistance >= sampling || i == points.length - 1) {
                 slopes.push(tempSlopes.reduce((a,b) => a + b, 0) / tempSlopes.length);
                 tempSlopes = [];
-                stepDistance += sampling;
+                stepDistance = 0;
             }
         } else if (samplingMode == gpxParser.SAMPLING_MODE.INDEX) {
             if (i%sampling == 0 || i == points.length - 1) {
