@@ -401,4 +401,5 @@ gpxParser.prototype.toGeoJSON = function () {
 }
 
 if(typeof module !== 'undefined')
+    require('jsdom-global')();
     module.exports = gpxParser;
