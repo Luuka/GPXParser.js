@@ -20,9 +20,19 @@ For more information about gpx format see http://www.topografix.com/gpx_manual.a
 
 # How to do
 
+### Install from npm
+`npm install --save gpxparser` 
+
 ### Load JavaScript file
+
+From an HTML document :
 ```html
 <script src="./js/GPXParser.js"></script>
+```
+
+From a node.js script :
+```js
+let gpxParser = require('gpxparser');
 ```
 
 ### Create and parse file
