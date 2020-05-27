@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Luuka/GPXParser.js#readme",
   "dependencies": {
+    "jsdom": "^15.2.1",
     "jsdom-global": "^3.0.2"
   },
   "devDependencies": {
