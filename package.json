@@ -1,5 +1,5 @@
 {
-  "name": "GPXParser.js",
+  "name": "gpxparser",
   "version": "3.0.1",
   "description": "GPX file parser",
   "main": "dist/GPXParser.min.js",
