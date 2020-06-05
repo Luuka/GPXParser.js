@@ -107,7 +107,7 @@ gpxParser.prototype.parse = function (gpxstring) {
             pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele"));
 	
 	    	var time = keepThis.getElementValue(rtept, "time");
-			if (time == null || time == undefined) {
+			if (time != null && time != undefined) {
 				pt.time = new Date(time);
 			}
             routepoints.push(pt);
