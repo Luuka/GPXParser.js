@@ -105,6 +105,11 @@ gpxParser.prototype.parse = function (gpxstring) {
             pt.lat    = parseFloat(rtept.getAttribute("lat"));
             pt.lon    = parseFloat(rtept.getAttribute("lon"));
             pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele"));
+	
+	    	var time = keepThis.getElementValue(rtept, "time");
+			if (time == null || time == undefined) {
+				pt.time = new Date(time);
+			}
             routepoints.push(pt);
         }
 
