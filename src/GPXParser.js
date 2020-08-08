@@ -11,11 +11,6 @@ let gpxParser = function () {
     this.routes    = [];
 };
 
-gpxParser.SAMPLING_MODE = {
-    INDEX: 'index',
-    DISTANCE: 'distance'
-}
-
 /**
  * Parse a gpx formatted string to a GPXParser Object
  * 
@@ -23,13 +18,8 @@ gpxParser.SAMPLING_MODE = {
  * 
  * @return {gpxParser} A GPXParser object
  */
-gpxParser.prototype.parse = function (gpxstring, config = {}) {
-
+gpxParser.prototype.parse = function (gpxstring) {
     let keepThis = this;
-    config = {
-        samplingMode: config.samplingMode || 'index',
-        sampling: config.sampling || 1,
-    };
 
     let domParser = new window.DOMParser();
     this.xmlSource = domParser.parseFromString(gpxstring, 'text/xml');
@@ -129,7 +119,7 @@ gpxParser.prototype.parse = function (gpxstring, config = {}) {
 
         route.distance  = keepThis.calculDistance(routepoints);
         route.elevation = keepThis.calcElevation(routepoints);
-        route.slopes    = keepThis.calculSlope(routepoints, route.distance.cumul, config.samplingMode, config.sampling);
+        route.slopes    = keepThis.calculSlope(routepoints, route.distance.cumul);
         route.points    = routepoints;
 
         keepThis.routes.push(route);
@@ -174,7 +164,7 @@ gpxParser.prototype.parse = function (gpxstring, config = {}) {
         }
         track.distance  = keepThis.calculDistance(trackpoints);
         track.elevation = keepThis.calcElevation(trackpoints);
-        track.slopes    = keepThis.calculSlope(trackpoints, track.distance.cumul, config.samplingMode, config.sampling);
+        track.slopes    = keepThis.calculSlope(trackpoints, track.distance.cumul);
         track.points    = trackpoints;
 
         keepThis.tracks.push(track);
@@ -315,21 +305,14 @@ gpxParser.prototype.calcElevation = function (points) {
 
 /**
  * Generate slopes Object from an array of Points and an array of Cumulative distance 
- * Work with 2 sampling modes :
- *  - gpxParser.SAMPLING_MODE.INDEX : Slopes are calculated between each <sampling> points
- *  - gpxParser.SAMPLING_MODE.DISTANCE : Slopes are calculated between each <sampling> meters
  * 
  * @param  {} points - An array of points with ele property
  * @param  {} cumul - An array of cumulative distance
- * @param  {} samplingMode - Sampling Mode (gpxParser.SAMPLING_MODE)
- * @param  {} sampling - Sampling value
  * 
  * @returns {SlopeObject} An array of slopes
  */
-gpxParser.prototype.calculSlope = function(points, cumul, samplingMode, sampling, average) {
+gpxParser.prototype.calculSlope = function(points, cumul) {
     let slopes = [];
-    let tempSlopes = [];
-    let stepDistance = 0;
 
     for (var i = 0; i < points.length - 1; i++) {
         let point = points[i];
@@ -338,21 +321,7 @@ gpxParser.prototype.calculSlope = function(points, cumul, samplingMode, sampling
         let distance = cumul[i+1] - cumul[i];
 
         let slope = (elevationDiff * 100) / distance;
-        tempSlopes.push(slope);
-
-        if (samplingMode == gpxParser.SAMPLING_MODE.DISTANCE) {
-            stepDistance += distance;
-            if (stepDistance >= sampling || i == points.length - 1) {
-                slopes.push(tempSlopes.reduce((a,b) => a + b, 0) / tempSlopes.length);
-                tempSlopes = [];
-                stepDistance = 0;
-            }
-        } else if (samplingMode == gpxParser.SAMPLING_MODE.INDEX) {
-            if (i%sampling == 0 || i == points.length - 1) {
-                slopes.push(tempSlopes.reduce((a,b) => a + b, 0) / tempSlopes.length);
-                tempSlopes = [];
-            } 
-        }
+        slopes.push(slope);
     }
 
     return slopes;

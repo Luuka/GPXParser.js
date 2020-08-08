@@ -88,6 +88,7 @@ let geoJSON = gpx.toGeoJSON();
 | points      | Array | Points object array |
 | distance      | Distance Object | Distance informations about the Route |
 | elevation      | Elevation Object | Elevation informations about the Route |
+| slopes      | Float Array | Slope of each sub-segment|
 
 
 ## Route object
@@ -103,6 +104,7 @@ let geoJSON = gpx.toGeoJSON();
 | points      | Array | Points object array    |
 | distance      | Distance Object | Distance informations about the Route |
 | elevation      | Elevation Object | Elevation informations about the Route |
+| slopes      | Float Array | Slope of each sub-segment|
 
 
 ## Point object
