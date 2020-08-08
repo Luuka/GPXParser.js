@@ -96,6 +96,7 @@ describe('GPX parser', function() {
             assert.notEqual(pt.lat, undefined);
             assert.notEqual(pt.lon, undefined);
             assert.notEqual(pt.ele, undefined);
+            assert(pt.time == null);
         });
     });
 
@@ -132,17 +133,24 @@ describe('GPX parser', function() {
             assert.notEqual(pt.lat, undefined);
             assert.notEqual(pt.lon, undefined);
             assert.notEqual(pt.ele, undefined);
+            assert(pt.time == null);
         });
     });
 
     it('GetElementValue should be null', function(){
-
         let elemValue = parser.getElementValue(parser.xmlSource, 'inexistant');
-
         assert.equal(null, elemValue);
     });
 
+    it('should compute slopes', function(){
+        let parserSlopesIdx = new gpxParser();    
+
+        parserSlopesIdx.parse(gpxDemo);
+        assert.equal(204, parserSlopesIdx.tracks[0].slopes.length);
+    });
+
 });
+
 
 describe('GeoJSON exporter', function() {
     let parser = new gpxParser();

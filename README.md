@@ -83,7 +83,7 @@ let geoJSON = gpx.toGeoJSON();
 | lat      | Float  | Point latitute    |
 | lon      | Float  | Point longitude   |
 | ele      | Float  | Point elevation   |
-
+| time     | Date   | Point time        |
 
 ## Track object
 | Property | Type   | Description       |
@@ -98,6 +98,7 @@ let geoJSON = gpx.toGeoJSON();
 | points      | Array | Points object array |
 | distance      | Distance Object | Distance informations about the Route |
 | elevation      | Elevation Object | Elevation informations about the Route |
+| slopes      | Float Array | Slope of each sub-segment|
 
 
 ## Route object
@@ -113,6 +114,7 @@ let geoJSON = gpx.toGeoJSON();
 | points      | Array | Points object array    |
 | distance      | Distance Object | Distance informations about the Route |
 | elevation      | Elevation Object | Elevation informations about the Route |
+| slopes      | Float Array | Slope of each sub-segment|
 
 
 ## Point object
@@ -121,6 +123,7 @@ let geoJSON = gpx.toGeoJSON();
 | lat      | Float  | Point latitute    |
 | lon      | Float  | Point longitude   |
 | ele      | Float  | Point elevation   |
+| time     | Date   | Point time        |
 
 
 ## Distance object

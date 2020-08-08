@@ -3,13 +3,18 @@
  * 
  * @constructor
  */
-var gpxParser = function () {
+let gpxParser = function () {
     this.xmlSource = "";
     this.metadata  = {};
     this.waypoints = [];
     this.tracks    = [];
     this.routes    = [];
 };
+
+gpxParser.SAMPLING_MODE = {
+    INDEX: 'index',
+    DISTANCE: 'distance'
+}
 
 /**
  * Parse a gpx formatted string to a GPXParser Object
@@ -19,8 +24,9 @@ var gpxParser = function () {
  * @return {gpxParser} A GPXParser object
  */
 gpxParser.prototype.parse = function (gpxstring) {
-    var keepThis = this;
-    var domParser = new window.DOMParser();
+    let keepThis = this;
+
+    let domParser = new window.DOMParser();
     this.xmlSource = domParser.parseFromString(gpxstring, 'text/xml');
 
     metadata = this.xmlSource.querySelector('metadata');
@@ -71,12 +77,16 @@ gpxParser.prototype.parse = function (gpxstring) {
         pt.ele  = parseFloat(keepThis.getElementValue(wpt, "ele")) || null;
         pt.cmt  = keepThis.getElementValue(wpt, "cmt");
         pt.desc = keepThis.getElementValue(wpt, "desc");
+
+        let time = keepThis.getElementValue(wpt, "time");
+        pt.time = time == null ? null : new Date(time);
+
         keepThis.waypoints.push(pt);
     }
 
     var rtes = [].slice.call(this.xmlSource.querySelectorAll('rte'));
     for (let idx in rtes){
-        var rte = rtes[idx];
+        let rte = rtes[idx];
         let route = {};
         route.name   = keepThis.getElementValue(rte, "name");
         route.cmt    = keepThis.getElementValue(rte, "cmt");
@@ -100,23 +110,29 @@ gpxParser.prototype.parse = function (gpxstring) {
         var rtepts = [].slice.call(rte.querySelectorAll('rtept'));
 
         for (let idxIn in rtepts){
-            var rtept = rtepts[idxIn];
+            let rtept = rtepts[idxIn];
             let pt    = {};
             pt.lat    = parseFloat(rtept.getAttribute("lat"));
             pt.lon    = parseFloat(rtept.getAttribute("lon"));
-            pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele"));
+            pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele")) || null;
+
+            let time = keepThis.getElementValue(rtept, "time");
+            pt.time = time == null ? null : new Date(time);
+
             routepoints.push(pt);
         }
 
-        route.distance = keepThis.calculDistance(routepoints);
+        route.distance  = keepThis.calculDistance(routepoints);
         route.elevation = keepThis.calcElevation(routepoints);
-        route.points = routepoints;
+        route.slopes    = keepThis.calculSlope(routepoints, route.distance.cumul);
+        route.points    = routepoints;
+
         keepThis.routes.push(route);
     }
 
     var trks = [].slice.call(this.xmlSource.querySelectorAll('trk'));
     for (let idx in trks){
-        var trk = trks[idx];
+        let trk = trks[idx];
         let track = {};
 
         track.name   = keepThis.getElementValue(trk, "name");
@@ -138,18 +154,23 @@ gpxParser.prototype.parse = function (gpxstring) {
         track.link = link;
 
         let trackpoints = [];
-        var trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
+        let trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
 	    for (let idxIn in trkpts){
             var trkpt = trkpts[idxIn];
             let pt = {};
             pt.lat = parseFloat(trkpt.getAttribute("lat"));
             pt.lon = parseFloat(trkpt.getAttribute("lon"));
             pt.ele = parseFloat(keepThis.getElementValue(trkpt, "ele")) || null;
+
+            let time = keepThis.getElementValue(trkpt, "time");
+            pt.time = time == null ? null : new Date(time);
+
             trackpoints.push(pt);
         }
-        track.distance = keepThis.calculDistance(trackpoints);
+        track.distance  = keepThis.calculDistance(trackpoints);
         track.elevation = keepThis.calcElevation(trackpoints);
-        track.points = trackpoints;
+        track.slopes    = keepThis.calculSlope(trackpoints, track.distance.cumul);
+        track.points    = trackpoints;
 
         keepThis.tracks.push(track);
     }
@@ -221,6 +242,7 @@ gpxParser.prototype.calculDistance = function(points) {
 
     return distance;
 }
+
 /**
  * Calcul Distance between two points with lat and lon
  * 
@@ -285,6 +307,30 @@ gpxParser.prototype.calcElevation = function (points) {
 
     return ret;
 };
+
+/**
+ * Generate slopes Object from an array of Points and an array of Cumulative distance 
+ * 
+ * @param  {} points - An array of points with ele property
+ * @param  {} cumul - An array of cumulative distance
+ * 
+ * @returns {SlopeObject} An array of slopes
+ */
+gpxParser.prototype.calculSlope = function(points, cumul) {
+    let slopes = [];
+
+    for (var i = 0; i < points.length - 1; i++) {
+        let point = points[i];
+        let nextPoint = points[i+1];
+        let elevationDiff = nextPoint.ele - point.ele;
+        let distance = cumul[i+1] - cumul[i];
+
+        let slope = (elevationDiff * 100) / distance;
+        slopes.push(slope);
+    }
+
+    return slopes;
+}
 
 /**
  * Export the GPX object to a GeoJSON formatted Object
