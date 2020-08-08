@@ -1,6 +1,6 @@
 {
   "name": "gpxparser",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "GPX file parser",
   "main": "dist/GPXParser.min.js",
   "scripts": {
