@@ -73,7 +73,7 @@ let geoJSON = gpx.toGeoJSON();
 | lat      | Float  | Point latitute    |
 | lon      | Float  | Point longitude   |
 | ele      | Float  | Point elevation   |
-
+| time     | Date   | Point time        |
 
 ## Track object
 | Property | Type   | Description       |
@@ -111,6 +111,7 @@ let geoJSON = gpx.toGeoJSON();
 | lat      | Float  | Point latitute    |
 | lon      | Float  | Point longitude   |
 | ele      | Float  | Point elevation   |
+| time     | Date   | Point time        |
 
 
 ## Distance object

@@ -71,12 +71,16 @@ gpxParser.prototype.parse = function (gpxstring) {
         pt.ele  = parseFloat(keepThis.getElementValue(wpt, "ele")) || null;
         pt.cmt  = keepThis.getElementValue(wpt, "cmt");
         pt.desc = keepThis.getElementValue(wpt, "desc");
+
+        let time = keepThis.getElementValue(wpt, "time");
+        pt.time = time == null ? null : new Date(time);
+
         keepThis.waypoints.push(pt);
     }
 
     var rtes = [].slice.call(this.xmlSource.querySelectorAll('rte'));
     for (let idx in rtes){
-        var rte = rtes[idx];
+        let rte = rtes[idx];
         let route = {};
         route.name   = keepThis.getElementValue(rte, "name");
         route.cmt    = keepThis.getElementValue(rte, "cmt");
@@ -100,11 +104,15 @@ gpxParser.prototype.parse = function (gpxstring) {
         var rtepts = [].slice.call(rte.querySelectorAll('rtept'));
 
         for (let idxIn in rtepts){
-            var rtept = rtepts[idxIn];
+            let rtept = rtepts[idxIn];
             let pt    = {};
             pt.lat    = parseFloat(rtept.getAttribute("lat"));
             pt.lon    = parseFloat(rtept.getAttribute("lon"));
-            pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele"));
+            pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele")) || null;
+
+            let time = keepThis.getElementValue(rtept, "time");
+            pt.time = time == null ? null : new Date(time);
+
             routepoints.push(pt);
         }
 
@@ -116,7 +124,7 @@ gpxParser.prototype.parse = function (gpxstring) {
 
     var trks = [].slice.call(this.xmlSource.querySelectorAll('trk'));
     for (let idx in trks){
-        var trk = trks[idx];
+        let trk = trks[idx];
         let track = {};
 
         track.name   = keepThis.getElementValue(trk, "name");
@@ -138,13 +146,17 @@ gpxParser.prototype.parse = function (gpxstring) {
         track.link = link;
 
         let trackpoints = [];
-        var trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
+        let trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
 	    for (let idxIn in trkpts){
             var trkpt = trkpts[idxIn];
             let pt = {};
             pt.lat = parseFloat(trkpt.getAttribute("lat"));
             pt.lon = parseFloat(trkpt.getAttribute("lon"));
             pt.ele = parseFloat(keepThis.getElementValue(trkpt, "ele")) || null;
+
+            let time = keepThis.getElementValue(trkpt, "time");
+            pt.time = time == null ? null : new Date(time);
+
             trackpoints.push(pt);
         }
         track.distance = keepThis.calculDistance(trackpoints);

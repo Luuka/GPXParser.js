@@ -96,6 +96,7 @@ describe('GPX parser', function() {
             assert.notEqual(pt.lat, undefined);
             assert.notEqual(pt.lon, undefined);
             assert.notEqual(pt.ele, undefined);
+            assert(pt.time == null);
         });
     });
 
@@ -132,13 +133,12 @@ describe('GPX parser', function() {
             assert.notEqual(pt.lat, undefined);
             assert.notEqual(pt.lon, undefined);
             assert.notEqual(pt.ele, undefined);
+            assert(pt.time == null);
         });
     });
 
     it('GetElementValue should be null', function(){
-
         let elemValue = parser.getElementValue(parser.xmlSource, 'inexistant');
-
         assert.equal(null, elemValue);
     });
 
