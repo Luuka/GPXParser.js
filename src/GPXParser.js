@@ -11,6 +11,11 @@ let gpxParser = function () {
     this.routes    = [];
 };
 
+gpxParser.SAMPLING_MODE = {
+    INDEX: 'index',
+    DISTANCE: 'distance'
+}
+
 /**
  * Parse a gpx formatted string to a GPXParser Object
  * 
