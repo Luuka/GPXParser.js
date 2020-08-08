@@ -142,7 +142,15 @@ describe('GPX parser', function() {
         assert.equal(null, elemValue);
     });
 
+    it('should compute slopes', function(){
+        let parserSlopesIdx = new gpxParser();    
+
+        parserSlopesIdx.parse(gpxDemo);
+        assert.equal(204, parserSlopesIdx.tracks[0].slopes.length);
+    });
+
 });
+
 
 describe('GeoJSON exporter', function() {
     let parser = new gpxParser();

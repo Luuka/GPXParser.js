@@ -37,7 +37,13 @@ document.addEventListener('DOMContentLoaded', function(){
 
             startDemo: function(gpx) {
                 this.gpxParser = new gpxParser();
-                this.gpxParser.parse(gpx);      
+                this.gpxParser.parse(
+                    gpx,
+                    {
+                        samplingMode: gpxParser.SAMPLING_MODE.INDEX,
+                        sampling: 10
+                    }
+                );      
                 
                 this.tracksLayer.clearLayers();
 
