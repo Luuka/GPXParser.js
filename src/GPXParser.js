@@ -71,7 +71,8 @@ gpxParser.prototype.parse = function (gpxstring) {
     for (let idx in wpts){
         var wpt = wpts[idx];
         let pt  = {};
-        pt.name = keepThis.getElementValue(wpt, "name")
+        pt.name = keepThis.getElementValue(wpt, "name");
+        pt.sym  = keepThis.getElementValue(wpt, "sym");
         pt.lat  = parseFloat(wpt.getAttribute("lat"));
         pt.lon  = parseFloat(wpt.getAttribute("lon"));
         pt.ele  = parseFloat(keepThis.getElementValue(wpt, "ele")) || null;
@@ -435,6 +436,7 @@ gpxParser.prototype.toGeoJSON = function () {
         };
 
         feature.properties.name = pt.name;
+        feature.properties.sym = pt.sym;
         feature.properties.cmt  = pt.cmt;
         feature.properties.desc = pt.desc;
 
