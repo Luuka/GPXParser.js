@@ -29,7 +29,7 @@ gpxParser.prototype.parse = function (gpxstring) {
     let domParser = new window.DOMParser();
     this.xmlSource = domParser.parseFromString(gpxstring, 'text/xml');
 
-    metadata = this.xmlSource.querySelector('metadata');
+    let metadata = this.xmlSource.querySelector('metadata');
     if(metadata != null){
         this.metadata.name  = this.getElementValue(metadata, "name");
         this.metadata.desc  = this.getElementValue(metadata, "desc");
@@ -279,32 +279,53 @@ gpxParser.prototype.calcDistanceBetween = function (wpt1, wpt2) {
 gpxParser.prototype.calcElevation = function (points) {
     var dp = 0,
         dm = 0,
-        ret = {};
+        ret = {},
+        elevation = [],
+        sum = 0,
+        min = 1e6,
+        max = -min;
 
-    for (var i = 0; i < points.length - 1; i++) {
-        var diff = parseFloat(points[i + 1].ele) - parseFloat(points[i].ele);
+    for (var i = 0; i < points.length; i++) {
+        if(points[i].ele === null) {
+            continue;
+        }
+
+        var ele = parseFloat(points[i].ele);
+        if(min > ele) {
+            min = ele;
+        }
+        if(max < ele) {
+            max = ele;
+        }
+        sum += ele;
+        
+        if((i + 1) == points.length) {
+            break;
+        }
+        if(points[i + 1].ele === null) {
+            continue;
+        }
+        var diff = parseFloat(points[i + 1].ele) - ele;
 
         if (diff < 0) {
-            dm += diff;
-        } else if (diff > 0) {
+            dm -= diff;
+        }
+        else if (diff > 0) {
             dp += diff;
         }
     }
 
-    var elevation = [];
-    var sum = 0;
-
-    for (var i = 0, len = points.length; i < len; i++) {
-        var ele = parseFloat(points[i].ele);
-        elevation.push(ele);
-        sum += ele;
+    if(dp || dm) {
+        ret.max = max;
+        ret.min = min;
     }
-
-    ret.max = Math.max.apply(null, elevation) || null;
-    ret.min = Math.min.apply(null, elevation) || null;
-    ret.pos = Math.abs(dp) || null;
-    ret.neg = Math.abs(dm) || null;
-    ret.avg = sum / elevation.length || null;
+    else {
+        ret.max = null;
+        ret.min = null;
+    }
+    ret.pos = dp || null;
+    ret.neg = dm || null;
+    ret.avg = sum / points.length || null;
 
     return ret;
 };

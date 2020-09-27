@@ -80,6 +80,7 @@ let geoJSON = gpx.toGeoJSON();
 | name     | String | Point name |
 | cmt      | String | Comment           |
 | desc     | String | Point description |
+| sym      | String | Symbole name      |
 | lat      | Float  | Point latitute    |
 | lon      | Float  | Point longitude   |
 | ele      | Float  | Point elevation   |
