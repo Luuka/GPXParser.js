@@ -11,11 +11,6 @@ let gpxParser = function () {
     this.routes    = [];
 };
 
-gpxParser.SAMPLING_MODE = {
-    INDEX: 'index',
-    DISTANCE: 'distance'
-}
-
 /**
  * Parse a gpx formatted string to a GPXParser Object
  * 
@@ -75,7 +70,10 @@ gpxParser.prototype.parse = function (gpxstring) {
         pt.sym  = keepThis.getElementValue(wpt, "sym");
         pt.lat  = parseFloat(wpt.getAttribute("lat"));
         pt.lon  = parseFloat(wpt.getAttribute("lon"));
-        pt.ele  = parseFloat(keepThis.getElementValue(wpt, "ele")) || null;
+
+        let floatValue = parseFloat(keepThis.getElementValue(wpt, "ele")); 
+        pt.ele = isNaN(floatValue) ? null : floatValue;
+
         pt.cmt  = keepThis.getElementValue(wpt, "cmt");
         pt.desc = keepThis.getElementValue(wpt, "desc");
 
@@ -115,7 +113,9 @@ gpxParser.prototype.parse = function (gpxstring) {
             let pt    = {};
             pt.lat    = parseFloat(rtept.getAttribute("lat"));
             pt.lon    = parseFloat(rtept.getAttribute("lon"));
-            pt.ele    = parseFloat(keepThis.getElementValue(rtept, "ele")) || null;
+
+            let floatValue = parseFloat(keepThis.getElementValue(rtept, "ele")); 
+            pt.ele = isNaN(floatValue) ? null : floatValue;
 
             let time = keepThis.getElementValue(rtept, "time");
             pt.time = time == null ? null : new Date(time);
@@ -161,7 +161,9 @@ gpxParser.prototype.parse = function (gpxstring) {
             let pt = {};
             pt.lat = parseFloat(trkpt.getAttribute("lat"));
             pt.lon = parseFloat(trkpt.getAttribute("lon"));
-            pt.ele = parseFloat(keepThis.getElementValue(trkpt, "ele")) || null;
+
+            let floatValue = parseFloat(keepThis.getElementValue(trkpt, "ele")); 
+            pt.ele = isNaN(floatValue) ? null : floatValue;
 
             let time = keepThis.getElementValue(trkpt, "time");
             pt.time = time == null ? null : new Date(time);
@@ -191,7 +193,7 @@ gpxParser.prototype.getElementValue = function(parent, needle){
         return elem.innerHTML != undefined ? elem.innerHTML : elem.childNodes[0].data;
     }
     return elem;
-}
+};
 
 
 /**
@@ -219,7 +221,7 @@ gpxParser.prototype.queryDirectSelector = function(parent, needle) {
     }
 
     return finalElem;
-}
+};
 
 /**
  * Calcul the Distance Object from an array of points
@@ -242,7 +244,7 @@ gpxParser.prototype.calculDistance = function(points) {
     distance.cumul = cumulDistance;
 
     return distance;
-}
+};
 
 /**
  * Calcul Distance between two points with lat and lon
@@ -267,7 +269,7 @@ gpxParser.prototype.calcDistanceBetween = function (wpt1, wpt2) {
 		    a = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon,
 		    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	return 6371000 * c;
-}
+};
 
 /**
  * Generate Elevation Object from an array of points
@@ -282,12 +284,17 @@ gpxParser.prototype.calcElevation = function (points) {
         ret = {};
 
     for (var i = 0; i < points.length - 1; i++) {
-        var diff = parseFloat(points[i + 1].ele) - parseFloat(points[i].ele);
+        let rawNextElevation = points[i + 1].ele;
+        let rawElevation =  points[i].ele;
 
-        if (diff < 0) {
-            dm += diff;
-        } else if (diff > 0) {
-            dp += diff;
+        if(rawNextElevation !== null && rawElevation !== null) {
+            let diff = parseFloat(rawNextElevation) - parseFloat(rawElevation);
+
+            if (diff < 0) {
+                dm += diff;
+            } else if (diff > 0) {
+                dp += diff;
+            }
         }
     }
 
@@ -295,9 +302,13 @@ gpxParser.prototype.calcElevation = function (points) {
     var sum = 0;
 
     for (var i = 0, len = points.length; i < len; i++) {
-        var ele = parseFloat(points[i].ele);
-        elevation.push(ele);
-        sum += ele;
+        let rawElevation = points[i].ele;
+
+        if(rawElevation !== null) {
+            var ele = parseFloat(points[i].ele);
+            elevation.push(ele);
+            sum += ele;
+        }
     }
 
     ret.max = Math.max.apply(null, elevation) || null;
@@ -331,7 +342,7 @@ gpxParser.prototype.calculSlope = function(points, cumul) {
     }
 
     return slopes;
-}
+};
 
 /**
  * Export the GPX object to a GeoJSON formatted Object
@@ -446,7 +457,7 @@ gpxParser.prototype.toGeoJSON = function () {
     }
 
     return GeoJSON;
-}
+};
 
 if(typeof module !== 'undefined'){
     require('jsdom-global')();
