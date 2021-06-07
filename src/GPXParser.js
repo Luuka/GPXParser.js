@@ -24,7 +24,7 @@ gpxParser.prototype.parse = function (gpxstring) {
     let domParser = new window.DOMParser();
     this.xmlSource = domParser.parseFromString(gpxstring, 'text/xml');
 
-    metadata = this.xmlSource.querySelector('metadata');
+    let metadata = this.xmlSource.querySelector('metadata');
     if(metadata != null){
         this.metadata.name  = this.getElementValue(metadata, "name");
         this.metadata.desc  = this.getElementValue(metadata, "desc");
