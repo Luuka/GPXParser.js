@@ -1,6 +1,6 @@
 /**
  * GPX file parser
- * 
+ *
  * @constructor
  */
 let gpxParser = function () {
@@ -13,9 +13,9 @@ let gpxParser = function () {
 
 /**
  * Parse a gpx formatted string to a GPXParser Object
- * 
+ *
  * @param {string} gpxstring - A GPX formatted String
- * 
+ *
  * @return {gpxParser} A GPXParser object
  */
 gpxParser.prototype.parse = function (gpxstring) {
@@ -71,7 +71,7 @@ gpxParser.prototype.parse = function (gpxstring) {
         pt.lat  = parseFloat(wpt.getAttribute("lat"));
         pt.lon  = parseFloat(wpt.getAttribute("lon"));
 
-        let floatValue = parseFloat(keepThis.getElementValue(wpt, "ele")); 
+        let floatValue = parseFloat(keepThis.getElementValue(wpt, "ele"));
         pt.ele = isNaN(floatValue) ? null : floatValue;
 
         pt.cmt  = keepThis.getElementValue(wpt, "cmt");
@@ -114,7 +114,7 @@ gpxParser.prototype.parse = function (gpxstring) {
             pt.lat    = parseFloat(rtept.getAttribute("lat"));
             pt.lon    = parseFloat(rtept.getAttribute("lon"));
 
-            let floatValue = parseFloat(keepThis.getElementValue(rtept, "ele")); 
+            let floatValue = parseFloat(keepThis.getElementValue(rtept, "ele"));
             pt.ele = isNaN(floatValue) ? null : floatValue;
 
             let time = keepThis.getElementValue(rtept, "time");
@@ -162,11 +162,24 @@ gpxParser.prototype.parse = function (gpxstring) {
             pt.lat = parseFloat(trkpt.getAttribute("lat"));
             pt.lon = parseFloat(trkpt.getAttribute("lon"));
 
-            let floatValue = parseFloat(keepThis.getElementValue(trkpt, "ele")); 
+            let floatValue = parseFloat(keepThis.getElementValue(trkpt, "ele"));
             pt.ele = isNaN(floatValue) ? null : floatValue;
 
             let time = keepThis.getElementValue(trkpt, "time");
             pt.time = time == null ? null : new Date(time);
+
+            // Probably want to pass in an array of extensions user wants here.
+            // This is all I want though
+            let extensions = trkpt.querySelector("extensions");
+            if (extensions!="null"){
+                // console.log(extensions.innerHTML);
+                let hr     = keepThis.getElementValue(extensions, "heartrate");
+                let cad    = keepThis.getElementValue(extensions, "cadence");
+                let pow    = keepThis.getElementValue(extensions, "power");
+                pt.hr      = isNaN(hr ) ? null : hr;
+                pt.cadence = isNaN(cad) ? null : cad;
+                pt.pow     = isNaN(pow) ? null : pow;
+            }
 
             trackpoints.push(pt);
         }
@@ -181,10 +194,10 @@ gpxParser.prototype.parse = function (gpxstring) {
 
 /**
  * Get value from a XML DOM element
- * 
+ *
  * @param  {Element} parent - Parent DOM Element
  * @param  {string} needle - Name of the searched element
- * 
+ *
  * @return {} The element value
  */
 gpxParser.prototype.getElementValue = function(parent, needle){
@@ -198,10 +211,10 @@ gpxParser.prototype.getElementValue = function(parent, needle){
 
 /**
  * Search the value of a direct child XML DOM element
- * 
+ *
  * @param  {Element} parent - Parent DOM Element
  * @param  {string} needle - Name of the searched element
- * 
+ *
  * @return {} The element value
  */
 gpxParser.prototype.queryDirectSelector = function(parent, needle) {
@@ -225,9 +238,9 @@ gpxParser.prototype.queryDirectSelector = function(parent, needle) {
 
 /**
  * Calcul the Distance Object from an array of points
- * 
+ *
  * @param  {} points - An array of points with lat and lon properties
- * 
+ *
  * @return {DistanceObject} An object with total distance and Cumulative distances
  */
 gpxParser.prototype.calculDistance = function(points) {
@@ -248,10 +261,10 @@ gpxParser.prototype.calculDistance = function(points) {
 
 /**
  * Calcul Distance between two points with lat and lon
- * 
+ *
  * @param  {} wpt1 - A geographic point with lat and lon properties
  * @param  {} wpt2 - A geographic point with lat and lon properties
- * 
+ *
  * @returns {float} The distance between the two points
  */
 gpxParser.prototype.calcDistanceBetween = function (wpt1, wpt2) {
@@ -273,9 +286,9 @@ gpxParser.prototype.calcDistanceBetween = function (wpt1, wpt2) {
 
 /**
  * Generate Elevation Object from an array of points
- * 
+ *
  * @param  {} points - An array of points with ele property
- * 
+ *
  * @returns {ElevationObject} An object with negative and positive height difference and average, max and min altitude data
  */
 gpxParser.prototype.calcElevation = function (points) {
@@ -321,11 +334,11 @@ gpxParser.prototype.calcElevation = function (points) {
 };
 
 /**
- * Generate slopes Object from an array of Points and an array of Cumulative distance 
- * 
+ * Generate slopes Object from an array of Points and an array of Cumulative distance
+ *
  * @param  {} points - An array of points with ele property
  * @param  {} cumul - An array of cumulative distance
- * 
+ *
  * @returns {SlopeObject} An array of slopes
  */
 gpxParser.prototype.calculSlope = function(points, cumul) {
@@ -346,7 +359,7 @@ gpxParser.prototype.calculSlope = function(points, cumul) {
 
 /**
  * Export the GPX object to a GeoJSON formatted Object
- * 
+ *
  * @returns {} a GeoJSON formatted Object
  */
 gpxParser.prototype.toGeoJSON = function () {
@@ -385,7 +398,7 @@ gpxParser.prototype.toGeoJSON = function () {
 
         for(idx in track.points) {
             let pt = track.points[idx];
-        
+
             var geoPt = [];
             geoPt.push(pt.lon);
             geoPt.push(pt.lat);
@@ -421,7 +434,7 @@ gpxParser.prototype.toGeoJSON = function () {
 
         for(idx in track.points) {
             let pt = track.points[idx];
-        
+
             var geoPt = [];
             geoPt.push(pt.lon);
             geoPt.push(pt.lat);
@@ -435,7 +448,7 @@ gpxParser.prototype.toGeoJSON = function () {
 
     for(idx in this.waypoints) {
         let pt = this.waypoints[idx];
-    
+
         var feature = {
             "type": "Feature",
             "geometry": {
