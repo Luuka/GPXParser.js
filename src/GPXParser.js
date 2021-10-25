@@ -15,10 +15,11 @@ let gpxParser = function () {
  * Parse a gpx formatted string to a GPXParser Object
  *
  * @param {string} gpxstring - A GPX formatted String
+ * @param {array} parseExts - an array of strings of extensions to parse
  *
  * @return {gpxParser} A GPXParser object
  */
-gpxParser.prototype.parse = function (gpxstring) {
+gpxParser.prototype.parse = function (gpxstring, parseExts=[]) {
     let keepThis = this;
 
     let domParser = new window.DOMParser();
@@ -172,13 +173,10 @@ gpxParser.prototype.parse = function (gpxstring) {
             // This is all I want though
             let extensions = trkpt.querySelector("extensions");
             if (extensions!="null"){
-                // console.log(extensions.innerHTML);
-                let hr     = keepThis.getElementValue(extensions, "heartrate");
-                let cad    = keepThis.getElementValue(extensions, "cadence");
-                let pow    = keepThis.getElementValue(extensions, "power");
-                pt.hr      = isNaN(hr ) ? null : hr;
-                pt.cadence = isNaN(cad) ? null : cad;
-                pt.pow     = isNaN(pow) ? null : pow;
+                for (let extension of parseExts){
+                    let value = parseFloat(keepThis.getElementValue(extensions, extension));
+                    pt[extension] = isNaN(value) ? null : value;
+                }
             }
 
             trackpoints.push(pt);
