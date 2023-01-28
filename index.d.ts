@@ -81,6 +81,44 @@ export type Link = {
   type: string
 }
 
+export type GeoJSONFeature = {
+  type: string
+  geometry: {
+      type: string
+      coordinates: Point[]
+  }
+  properties: {
+    name: any
+    cmt: any
+    desc: any
+    src: any | null
+    number: any | null
+    link: any | null
+    type: any | null
+    sym: any | null
+  }
+}
+
+export type GeoJSON = {
+  type: string
+  features: GeoJSONFeature[]
+  properties: {
+      name: any
+      desc: any
+      time: any
+      author: any
+      link: any
+  }
+}
+
+export type ElevationObject = {
+  max: any
+  min: any
+  pos: number | null
+  neg: number | null
+  avg: number | null
+}
+
 declare class GpxParser {
   xmlSource: string
   metadata: MetaData
@@ -88,7 +126,13 @@ declare class GpxParser {
   tracks: Track[]
   routes: Route[]
   parse(xml: string): any
-  getElementValue(element: Element, needle: string): any
+  getElementValue(element: Element, needle: string): Element
+  queryDirectSelector(element: Element, needle: string): Element
+  calculDistance(points: Point[]): Distance
+  calcDistanceBetween(wpt1: Point, wpt2: Point): number
+  calcElevation(points: Point[]): ElevationObject
+  calculSlope(points: Point[], cumul: number[]): number[]
+  toGeoJSON(): GeoJSON
 }
 
 export default GpxParser
