@@ -126,7 +126,7 @@ declare class GpxParser {
   tracks: Track[]
   routes: Route[]
   parse(xml: string): any
-  getElementValue(element: Element, needle: string): Element
+  getElementValue(element: Element, needle: string): Element | null
   queryDirectSelector(element: Element, needle: string): Element
   calculDistance(points: Point[]): Distance
   calcDistanceBetween(wpt1: Point, wpt2: Point): number
