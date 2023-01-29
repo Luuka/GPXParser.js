@@ -111,14 +111,6 @@ export type GeoJSON = {
   }
 }
 
-export type ElevationObject = {
-  max: any
-  min: any
-  pos: number | null
-  neg: number | null
-  avg: number | null
-}
-
 declare class GpxParser {
   xmlSource: string
   metadata: MetaData
@@ -130,7 +122,7 @@ declare class GpxParser {
   queryDirectSelector(element: Element, needle: string): Element
   calculDistance(points: Point[]): Distance
   calcDistanceBetween(wpt1: Point, wpt2: Point): number
-  calcElevation(points: Point[]): ElevationObject
+  calcElevation(points: Point[]): Elevation
   calculSlope(points: Point[], cumul: number[]): number[]
   toGeoJSON(): GeoJSON
 }
