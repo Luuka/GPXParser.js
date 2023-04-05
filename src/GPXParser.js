@@ -177,6 +177,7 @@ gpxParser.prototype.parse = function (gpxstring) {
 
         keepThis.tracks.push(track);
     }
+    return keepThis;
 };
 
 /**
