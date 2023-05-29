@@ -460,6 +460,8 @@ gpxParser.prototype.toGeoJSON = function () {
 };
 
 if(typeof module !== 'undefined'){
-    require('jsdom-global')();
+    if (typeof document == 'undefined') {
+        require('jsdom-global')();
+    }
     module.exports = gpxParser;
 }
