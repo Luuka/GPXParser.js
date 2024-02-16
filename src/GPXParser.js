@@ -212,8 +212,8 @@ gpxParser.prototype.queryDirectSelector = function(parent, needle) {
     if(elements.length > 1) {
         let directChilds = parent.childNodes;
 
-        for(idx in directChilds) {
-            elem = directChilds[idx];
+        for(let idx in directChilds) {
+            let elem = directChilds[idx];
             if(elem.tagName === needle) {
                 finalElem = elem;
             }
