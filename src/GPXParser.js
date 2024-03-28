@@ -382,7 +382,7 @@ gpxParser.prototype.calculSlope = function(points, cumul) {
  * @returns {} a GeoJSON formatted Object
  */
 gpxParser.prototype.toGeoJSON = function () {
-    var GeoJSON = {
+    let GeoJSON = {
         "type": "FeatureCollection",
         "features": [],
         "properties": {
@@ -394,8 +394,42 @@ gpxParser.prototype.toGeoJSON = function () {
         },
     };
 
-    for(idx in this.tracks) {
-        let track = this.tracks[idx];
+    for(let idx in this.tracks) {
+        const track = this.tracks[idx];
+        var feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": []
+            },
+            "properties": {
+            }
+        };
+
+        feature.properties.name   = track.name;
+        feature.properties.cmt    = track.cmt;
+        feature.properties.desc   = track.desc;
+        feature.properties.src    = track.src;
+        feature.properties.number = track.number;
+        feature.properties.link   = track.link;
+        feature.properties.type   = track.type;
+
+        for(let idx in track.points) {
+            const pt = track.points[idx];
+        
+            let geoPt = [];
+            geoPt.push(pt.lon);
+            geoPt.push(pt.lat);
+            geoPt.push(pt.ele);
+
+            feature.geometry.coordinates.push(geoPt);
+        }
+
+        GeoJSON.features.push(feature);
+    }
+
+    for(let idx in this.routes) {
+        const track = this.routes[idx];
 
         var feature = {
             "type": "Feature",
@@ -415,8 +449,9 @@ gpxParser.prototype.toGeoJSON = function () {
         feature.properties.link   = track.link;
         feature.properties.type   = track.type;
 
-        for(idx in track.points) {
-            let pt = track.points[idx];
+
+        for(let idx in track.points) {
+            const pt = track.points[idx];
         
             var geoPt = [];
             geoPt.push(pt.lon);
@@ -429,44 +464,8 @@ gpxParser.prototype.toGeoJSON = function () {
         GeoJSON.features.push(feature);
     }
 
-    for(idx in this.routes) {
-        let track = this.routes[idx];
-
-        var feature = {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": []
-            },
-            "properties": {
-            }
-        };
-
-        feature.properties.name   = track.name;
-        feature.properties.cmt    = track.cmt;
-        feature.properties.desc   = track.desc;
-        feature.properties.src    = track.src;
-        feature.properties.number = track.number;
-        feature.properties.link   = track.link;
-        feature.properties.type   = track.type;
-
-
-        for(idx in track.points) {
-            let pt = track.points[idx];
-        
-            var geoPt = [];
-            geoPt.push(pt.lon);
-            geoPt.push(pt.lat);
-            geoPt.push(pt.ele);
-
-            feature.geometry.coordinates.push(geoPt);
-        }
-
-        GeoJSON.features.push(feature);
-    }
-
-    for(idx in this.waypoints) {
-        let pt = this.waypoints[idx];
+    for(let idx in this.waypoints) {
+        const pt = this.waypoints[idx];
     
         var feature = {
             "type": "Feature",
