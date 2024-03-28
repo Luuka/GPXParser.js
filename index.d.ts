@@ -49,11 +49,18 @@ export type Point = {
   lon: number
   ele: number
   time: Date
+  temp?: number
+  hr?: number
+  cad?: number
+  course?: number
+  speed?: number
+  roc?: number
+  distance?: number
 }
 
 export type Distance = {
   total: number
-  cumul: number
+  cumul: number[]
 }
 
 export type Elevation = {

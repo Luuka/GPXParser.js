@@ -64,7 +64,7 @@ gpxParser.prototype.parse = function (gpxstring) {
 
     var wpts = [].slice.call(this.xmlSource.querySelectorAll('wpt'));
     for (let idx in wpts){
-        var wpt = wpts[idx];
+        const wpt = wpts[idx];
         let pt  = {};
         pt.name = keepThis.getElementValue(wpt, "name");
         pt.sym  = keepThis.getElementValue(wpt, "sym");
@@ -85,7 +85,7 @@ gpxParser.prototype.parse = function (gpxstring) {
 
     var rtes = [].slice.call(this.xmlSource.querySelectorAll('rte'));
     for (let idx in rtes){
-        let rte = rtes[idx];
+        const rte = rtes[idx];
         let route = {};
         route.name   = keepThis.getElementValue(rte, "name");
         route.cmt    = keepThis.getElementValue(rte, "cmt");
@@ -93,11 +93,11 @@ gpxParser.prototype.parse = function (gpxstring) {
         route.src    = keepThis.getElementValue(rte, "src");
         route.number = keepThis.getElementValue(rte, "number");
 
-        let type     = keepThis.queryDirectSelector(rte, "type");
+        const type     = keepThis.queryDirectSelector(rte, "type");
         route.type   = type != null ? type.innerHTML : null;
 
         let link     = {};
-        let linkElem = rte.querySelector('link');
+        const linkElem = rte.querySelector('link');
         if(linkElem != null){
             link.href = linkElem.getAttribute('href');
             link.text = keepThis.getElementValue(linkElem, "text");
@@ -106,10 +106,10 @@ gpxParser.prototype.parse = function (gpxstring) {
         route.link = link;
 
         let routepoints = [];
-        var rtepts = [].slice.call(rte.querySelectorAll('rtept'));
+        const rtepts = [].slice.call(rte.querySelectorAll('rtept'));
 
         for (let idxIn in rtepts){
-            let rtept = rtepts[idxIn];
+            const rtept = rtepts[idxIn];
             let pt    = {};
             pt.lat    = parseFloat(rtept.getAttribute("lat"));
             pt.lon    = parseFloat(rtept.getAttribute("lon"));
@@ -131,9 +131,9 @@ gpxParser.prototype.parse = function (gpxstring) {
         keepThis.routes.push(route);
     }
 
-    var trks = [].slice.call(this.xmlSource.querySelectorAll('trk'));
+    const trks = [].slice.call(this.xmlSource.querySelectorAll('trk'));
     for (let idx in trks){
-        let trk = trks[idx];
+        const trk = trks[idx];
         let track = {};
 
         track.name   = keepThis.getElementValue(trk, "name");
@@ -142,11 +142,11 @@ gpxParser.prototype.parse = function (gpxstring) {
         track.src    = keepThis.getElementValue(trk, "src");
         track.number = keepThis.getElementValue(trk, "number");
 
-        let type     = keepThis.queryDirectSelector(trk, "type");
+        const type     = keepThis.queryDirectSelector(trk, "type");
         track.type   = type != null ? type.innerHTML : null;
 
         let link     = {};
-        let linkElem = trk.querySelector('link');
+        const linkElem = trk.querySelector('link');
         if(linkElem != null){
             link.href = linkElem.getAttribute('href');
             link.text = keepThis.getElementValue(linkElem, "text");
@@ -155,18 +155,50 @@ gpxParser.prototype.parse = function (gpxstring) {
         track.link = link;
 
         let trackpoints = [];
-        let trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
+        const trkpts = [].slice.call(trk.querySelectorAll('trkpt'));
 	    for (let idxIn in trkpts){
-            var trkpt = trkpts[idxIn];
+            const trkpt = trkpts[idxIn];
             let pt = {};
             pt.lat = parseFloat(trkpt.getAttribute("lat"));
             pt.lon = parseFloat(trkpt.getAttribute("lon"));
 
-            let floatValue = parseFloat(keepThis.getElementValue(trkpt, "ele")); 
+            const floatValue = parseFloat(keepThis.getElementValue(trkpt, "ele")); 
             pt.ele = isNaN(floatValue) ? null : floatValue;
 
-            let time = keepThis.getElementValue(trkpt, "time");
+            const time = keepThis.getElementValue(trkpt, "time");
             pt.time = time == null ? null : new Date(time);
+
+            if (keepThis.getElementValue(trkpt, "extensions")) {
+                const temp = keepThis.getElementValue(trkpt, "temp")
+                const hr = keepThis.getElementValue(trkpt, "hr")
+                const cad = keepThis.getElementValue(trkpt, "cad")
+                const course = keepThis.getElementValue(trkpt, "course")
+                const speed = keepThis.getElementValue(trkpt, "speed")
+                const roc = keepThis.getElementValue(trkpt, "roc")
+                const distance = keepThis.getElementValue(trkpt, "distance")
+
+                if (temp !== null) {
+                    pt.temp =  parseFloat(temp)
+                }
+                if (hr !== null) {
+                    pt.hr =  parseFloat(hr)
+                }
+                if (cad !== null) {
+                    pt.cad =  parseFloat(cad)
+                }
+                if (course !== null) {
+                    pt.course =  parseFloat(course)
+                }
+                if (speed !== null) {
+                    pt.speed =  parseFloat(speed)
+                }
+                if (roc !== null) {
+                    pt.roc =  parseFloat(roc)
+                }
+                if (distance !== null) {
+                    pt.distance =  parseFloat(distance)
+                }
+            }
 
             trackpoints.push(pt);
         }
@@ -350,7 +382,7 @@ gpxParser.prototype.calculSlope = function(points, cumul) {
  * @returns {} a GeoJSON formatted Object
  */
 gpxParser.prototype.toGeoJSON = function () {
-    var GeoJSON = {
+    let GeoJSON = {
         "type": "FeatureCollection",
         "features": [],
         "properties": {
@@ -362,8 +394,42 @@ gpxParser.prototype.toGeoJSON = function () {
         },
     };
 
-    for(idx in this.tracks) {
-        let track = this.tracks[idx];
+    for(let idx in this.tracks) {
+        const track = this.tracks[idx];
+        var feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": []
+            },
+            "properties": {
+            }
+        };
+
+        feature.properties.name   = track.name;
+        feature.properties.cmt    = track.cmt;
+        feature.properties.desc   = track.desc;
+        feature.properties.src    = track.src;
+        feature.properties.number = track.number;
+        feature.properties.link   = track.link;
+        feature.properties.type   = track.type;
+
+        for(let idx in track.points) {
+            const pt = track.points[idx];
+        
+            let geoPt = [];
+            geoPt.push(pt.lon);
+            geoPt.push(pt.lat);
+            geoPt.push(pt.ele);
+
+            feature.geometry.coordinates.push(geoPt);
+        }
+
+        GeoJSON.features.push(feature);
+    }
+
+    for(let idx in this.routes) {
+        const track = this.routes[idx];
 
         var feature = {
             "type": "Feature",
@@ -383,8 +449,9 @@ gpxParser.prototype.toGeoJSON = function () {
         feature.properties.link   = track.link;
         feature.properties.type   = track.type;
 
-        for(idx in track.points) {
-            let pt = track.points[idx];
+
+        for(let idx in track.points) {
+            const pt = track.points[idx];
         
             var geoPt = [];
             geoPt.push(pt.lon);
@@ -397,44 +464,8 @@ gpxParser.prototype.toGeoJSON = function () {
         GeoJSON.features.push(feature);
     }
 
-    for(idx in this.routes) {
-        let track = this.routes[idx];
-
-        var feature = {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": []
-            },
-            "properties": {
-            }
-        };
-
-        feature.properties.name   = track.name;
-        feature.properties.cmt    = track.cmt;
-        feature.properties.desc   = track.desc;
-        feature.properties.src    = track.src;
-        feature.properties.number = track.number;
-        feature.properties.link   = track.link;
-        feature.properties.type   = track.type;
-
-
-        for(idx in track.points) {
-            let pt = track.points[idx];
-        
-            var geoPt = [];
-            geoPt.push(pt.lon);
-            geoPt.push(pt.lat);
-            geoPt.push(pt.ele);
-
-            feature.geometry.coordinates.push(geoPt);
-        }
-
-        GeoJSON.features.push(feature);
-    }
-
-    for(idx in this.waypoints) {
-        let pt = this.waypoints[idx];
+    for(let idx in this.waypoints) {
+        const pt = this.waypoints[idx];
     
         var feature = {
             "type": "Feature",
